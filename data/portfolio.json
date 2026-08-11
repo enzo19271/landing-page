@@ -1,17 +1,6 @@
 {
   "works": [
     {
-      "id": "1",
-      "title": "Coffee Shop POS System",
-      "category": "Web Application",
-      "description": "Sistem Point of Sale untuk kafe dengan fitur manajemen menu, pesanan, dan analytics",
-      "emoji": "☕",
-      "image": "",
-      "link": "https://github.com/feriawan/coffee-shop-pos",
-      "tags": ["Vercel", "Node.js", "GitHub API"],
-      "createdAt": "2024-08-11T00:00:00.000Z"
-    },
-    {
       "id": "2",
       "title": "LMS Unmuh Babel",
       "category": "Web Application",
@@ -19,7 +8,11 @@
       "emoji": "📚",
       "image": "",
       "link": "https://github.com/feriawan/lms-unmuh-babel",
-      "tags": ["Vercel", "Node.js", "GitHub API"],
+      "tags": [
+        "Vercel",
+        "Node.js",
+        "GitHub API"
+      ],
       "createdAt": "2024-08-11T00:00:00.000Z"
     },
     {
@@ -30,7 +23,11 @@
       "emoji": "🎓",
       "image": "",
       "link": "https://github.com/feriawan/academy-eji",
-      "tags": ["Vercel", "Node.js", "Education"],
+      "tags": [
+        "Vercel",
+        "Node.js",
+        "Education"
+      ],
       "createdAt": "2024-08-11T00:00:00.000Z"
     }
   ]
