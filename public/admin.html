@@ -23,8 +23,6 @@
       --text-sub: #71717a;
       --accent-white: #ffffff;
       --accent-black: #09090b;
-      --danger: #ef4444;
-      --danger-hover: #dc2626;
       --radius-sm: 8px;
       --radius-md: 16px;
       --radius-lg: 24px;
@@ -46,6 +44,62 @@
       background-image: 
         radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.04) 0%, transparent 60%),
         radial-gradient(circle at 100% 50%, rgba(255, 255, 255, 0.02) 0%, transparent 40%);
+    }
+
+    /* ─── FLOATING TOAST CONTAINER (BOTTOM-RIGHT) ─── */
+    .toast-container {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 3000;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-width: 360px;
+      width: calc(100% - 48px);
+      pointer-events: none;
+    }
+
+    .toast {
+      pointer-events: auto;
+      background: rgba(18, 18, 21, 0.92);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border-color-hover);
+      color: var(--accent-white);
+      padding: 14px 18px;
+      border-radius: var(--radius-md);
+      box-shadow: 0 16px 32px rgba(0, 0, 0, 0.6);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.9em;
+      font-weight: 500;
+      animation: toastSlideIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: var(--transition);
+    }
+
+    .toast.hide {
+      opacity: 0;
+      transform: translateX(100%);
+    }
+
+    .toast-success {
+      border-left: 4px solid #4ade80;
+    }
+
+    .toast-success i {
+      color: #4ade80;
+      font-size: 1.2em;
+    }
+
+    .toast-error {
+      border-left: 4px solid #f87171;
+    }
+
+    .toast-error i {
+      color: #f87171;
+      font-size: 1.2em;
     }
 
     /* ─── LOGIN VIEW ─── */
@@ -150,26 +204,6 @@
       transform: translateY(0);
     }
 
-    .alert {
-      padding: 12px 16px;
-      border-radius: var(--radius-sm);
-      margin-bottom: 20px;
-      font-size: 0.9em;
-      font-weight: 500;
-    }
-
-    .alert-error {
-      background: rgba(239, 68, 68, 0.12);
-      color: #f87171;
-      border: 1px solid rgba(239, 68, 68, 0.3);
-    }
-
-    .alert-success {
-      background: rgba(34, 197, 94, 0.12);
-      color: #4ade80;
-      border: 1px solid rgba(34, 197, 94, 0.3);
-    }
-
     /* ─── DASHBOARD VIEW ─── */
     .dashboard {
       display: none;
@@ -222,7 +256,7 @@
       border-bottom: 1px solid var(--border-color);
       display: flex;
       gap: 6px;
-      padding: 10px 32px;
+      padding: 12px 32px;
       overflow-x: auto;
       white-space: nowrap;
     }
@@ -328,7 +362,7 @@
       gap: 24px;
       margin-bottom: 20px;
       background: rgba(255, 255, 255, 0.02);
-      padding: 16px;
+      padding: 18px;
       border-radius: var(--radius-md);
       border: 1px solid var(--border-color);
     }
@@ -544,19 +578,9 @@
 
     .submit-btn { width: 100%; margin-top: 12px; }
 
-    .spinner {
-      border: 3px solid rgba(255,255,255,0.1);
-      border-top: 3px solid var(--accent-white);
-      border-radius: 50%;
-      width: 28px;
-      height: 28px;
-      animation: spin 0.8s linear infinite;
-      margin: 0 auto;
-    }
-
-    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     @keyframes zoomIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+    @keyframes toastSlideIn { from { opacity: 0; transform: translateX(100%); } to { opacity: 1; transform: translateX(0); } }
 
     .hint { font-size: 0.8em; color: var(--text-sub); margin-top: 6px; }
 
@@ -567,10 +591,14 @@
       .edit-btn, .delete-btn { flex: 1; }
       .dashboard-header, .tab-nav { padding-left: 16px; padding-right: 16px; }
       .dashboard-content { padding: 24px 16px; }
+      .toast-container { right: 16px; bottom: 16px; width: calc(100% - 32px); }
     }
   </style>
 </head>
 <body>
+
+  <!-- FLOATING TOAST CONTAINER -->
+  <div id="toastContainer" class="toast-container"></div>
 
   <!-- LOGIN VIEW -->
   <div id="loginView" class="login-container">
@@ -991,6 +1019,27 @@
     let editNewsImage = null;      // base64 pending upload (edit)
     let editingNewsId = null;
 
+    // ─── FLOATING TOAST NOTIFICATION SYSTEM ─────────────────────────────
+    function showToast(message, type = 'success') {
+      const container = document.getElementById('toastContainer');
+      if (!container) return;
+
+      const toast = document.createElement('div');
+      toast.className = `toast toast-${type}`;
+      
+      const icon = type === 'success' 
+        ? '<i class="fa-solid fa-circle-check"></i>' 
+        : '<i class="fa-solid fa-circle-exclamation"></i>';
+
+      toast.innerHTML = `${icon} <span>${message}</span>`;
+      container.appendChild(toast);
+
+      setTimeout(() => {
+        toast.classList.add('hide');
+        setTimeout(() => toast.remove(), 350);
+      }, 3500);
+    }
+
     // ─── INIT ───────────────────────────────────────────────────────────
     window.addEventListener('DOMContentLoaded', () => {
       if (token) {
@@ -1019,11 +1068,9 @@
     // ─── AUTH ───────────────────────────────────────────────────────────
     async function handleLogin() {
       const password = document.getElementById('password').value;
-      const errorDiv = document.getElementById('loginError');
-      errorDiv.innerHTML = '';
 
       if (!password) {
-        errorDiv.innerHTML = '<div class="alert alert-error">Password tidak boleh kosong</div>';
+        showToast('Password tidak boleh kosong', 'error');
         return;
       }
 
@@ -1036,15 +1083,16 @@
 
         const data = await response.json();
         if (!response.ok) {
-          errorDiv.innerHTML = '<div class="alert alert-error">' + data.message + '</div>';
+          showToast(data.message || 'Login gagal', 'error');
           return;
         }
 
         token = data.token;
         localStorage.setItem('adminToken', token);
+        showToast('Login berhasil! Selamat datang.', 'success');
         showDashboard();
       } catch (err) {
-        errorDiv.innerHTML = '<div class="alert alert-error">Login gagal: ' + err.message + '</div>';
+        showToast('Login gagal: ' + err.message, 'error');
       }
     }
 
@@ -1072,6 +1120,7 @@
       token = null;
       currentTags = [];
       showLoginView();
+      showToast('Berhasil keluar dari admin', 'success');
     }
 
     // ─── VIEWS ──────────────────────────────────────────────────────────
@@ -1190,17 +1239,16 @@
       nameInput.value = '';
       levelInput.value = 80;
       renderSkills();
+      showToast('Skill berhasil ditambahkan', 'success');
     }
 
     function removeSkill(i) {
       profileData.skills.splice(i, 1);
       renderSkills();
+      showToast('Skill dihapus', 'success');
     }
 
     async function saveProfile() {
-      const errorDiv = document.getElementById('profileFormError');
-      errorDiv.innerHTML = '';
-
       const payload = {
         name: document.getElementById('pName').value,
         title: document.getElementById('pTitle').value,
@@ -1226,27 +1274,23 @@
         });
         if (!res.ok) {
           const err = await res.json();
-          errorDiv.innerHTML = '<div class="alert alert-error">' + err.message + '</div>';
+          showToast(err.message || 'Gagal menyimpan profil', 'error');
           return;
         }
         profileData = await res.json();
         newProfilePhoto = null;
-        errorDiv.innerHTML = '<div class="alert alert-success">Profil berhasil disimpan!</div>';
-        setTimeout(() => { errorDiv.innerHTML = ''; }, 2000);
+        showToast('Profil berhasil disimpan!', 'success');
       } catch (err) {
-        errorDiv.innerHTML = '<div class="alert alert-error">Error: ' + err.message + '</div>';
+        showToast('Error: ' + err.message, 'error');
       }
     }
 
     // ─── EXPERIENCE ─────────────────────────────────────────────────────
     async function handleSaveExperience() {
-      const errorDiv = document.getElementById('expFormError');
-      errorDiv.innerHTML = '';
-
       const position = document.getElementById('expPosition').value;
       const organization = document.getElementById('expOrganization').value;
       if (!position || !organization) {
-        errorDiv.innerHTML = '<div class="alert alert-error">Posisi dan instansi tidak boleh kosong</div>';
+        showToast('Posisi dan instansi tidak boleh kosong', 'error');
         return;
       }
 
@@ -1267,7 +1311,7 @@
         });
         if (!res.ok) {
           const err = await res.json();
-          errorDiv.innerHTML = '<div class="alert alert-error">' + err.message + '</div>';
+          showToast(err.message || 'Gagal menambah pengalaman', 'error');
           return;
         }
 
@@ -1279,11 +1323,10 @@
         document.getElementById('expCurrent').checked = false;
         document.getElementById('expDescription').value = '';
 
-        errorDiv.innerHTML = '<div class="alert alert-success">Pengalaman berhasil ditambahkan!</div>';
-        setTimeout(() => { errorDiv.innerHTML = ''; }, 1500);
+        showToast('Pengalaman berhasil ditambahkan!', 'success');
         loadExperienceAdmin();
       } catch (err) {
-        errorDiv.innerHTML = '<div class="alert alert-error">Error: ' + err.message + '</div>';
+        showToast('Error: ' + err.message, 'error');
       }
     }
 
@@ -1328,10 +1371,11 @@
           method: 'DELETE',
           headers: { 'Authorization': `Bearer ${token}` }
         });
-        if (!res.ok) { alert('Error menghapus pengalaman'); return; }
+        if (!res.ok) { showToast('Error menghapus pengalaman', 'error'); return; }
+        showToast('Pengalaman berhasil dihapus', 'success');
         loadExperienceAdmin();
       } catch (err) {
-        alert('Error: ' + err.message);
+        showToast('Error: ' + err.message, 'error');
       }
     }
 
@@ -1345,12 +1389,9 @@
     }
 
     async function uploadCertificate() {
-      const errorDiv = document.getElementById('certFormError');
-      errorDiv.innerHTML = '';
-
       const title = document.getElementById('certTitle').value;
       if (!title) {
-        errorDiv.innerHTML = '<div class="alert alert-error">Nama sertifikat tidak boleh kosong</div>';
+        showToast('Nama sertifikat tidak boleh kosong', 'error');
         return;
       }
 
@@ -1368,7 +1409,7 @@
         });
         if (!res.ok) {
           const err = await res.json();
-          errorDiv.innerHTML = '<div class="alert alert-error">' + err.message + '</div>';
+          showToast(err.message || 'Gagal mengupload sertifikat', 'error');
           return;
         }
 
@@ -1380,11 +1421,10 @@
         document.getElementById('certUrl').value = '';
         document.getElementById('certPreviewWrap').innerHTML = '';
 
-        errorDiv.innerHTML = '<div class="alert alert-success">Sertifikat berhasil diupload!</div>';
-        setTimeout(() => { errorDiv.innerHTML = ''; }, 1500);
+        showToast('Sertifikat berhasil diupload!', 'success');
         loadCertificatesAdmin();
       } catch (err) {
-        errorDiv.innerHTML = '<div class="alert alert-error">Error: ' + err.message + '</div>';
+        showToast('Error: ' + err.message, 'error');
       }
     }
 
@@ -1418,10 +1458,11 @@
           method: 'DELETE',
           headers: { 'Authorization': `Bearer ${token}` }
         });
-        if (!res.ok) { alert('Error menghapus sertifikat'); return; }
+        if (!res.ok) { showToast('Error menghapus sertifikat', 'error'); return; }
+        showToast('Sertifikat dihapus', 'success');
         loadCertificatesAdmin();
       } catch (err) {
-        alert('Error: ' + err.message);
+        showToast('Error: ' + err.message, 'error');
       }
     }
 
@@ -1435,16 +1476,13 @@
     }
 
     async function handleSaveNews() {
-      const errorDiv = document.getElementById('newsFormError');
-      errorDiv.innerHTML = '';
-
       const title = document.getElementById('newsTitle').value;
       const summary = document.getElementById('newsSummary').value;
       const sourceUrl = document.getElementById('newsSourceUrl').value;
       const content = document.getElementById('newsContent').value;
 
       if (!title) {
-        errorDiv.innerHTML = '<div class="alert alert-error">Judul tidak boleh kosong</div>';
+        showToast('Judul tidak boleh kosong', 'error');
         return;
       }
 
@@ -1461,7 +1499,7 @@
         });
         if (!res.ok) {
           const err = await res.json();
-          errorDiv.innerHTML = '<div class="alert alert-error">' + err.message + '</div>';
+          showToast(err.message || 'Gagal menyimpan berita', 'error');
           return;
         }
 
@@ -1473,11 +1511,10 @@
         document.getElementById('newsPreviewWrap').innerHTML = '';
         newNewsImage = null;
 
-        errorDiv.innerHTML = '<div class="alert alert-success">Berita berhasil ditambahkan!</div>';
-        setTimeout(() => { errorDiv.innerHTML = ''; }, 1500);
+        showToast('Berita berhasil ditambahkan!', 'success');
         loadNewsAdmin();
       } catch (err) {
-        errorDiv.innerHTML = '<div class="alert alert-error">Error: ' + err.message + '</div>';
+        showToast('Error: ' + err.message, 'error');
       }
     }
 
@@ -1539,12 +1576,9 @@
     }
 
     async function handleUpdateNews() {
-      const errorDiv = document.getElementById('editNewsFormError');
-      errorDiv.innerHTML = '';
-
       const title = document.getElementById('editNewsTitle').value;
       if (!title) {
-        errorDiv.innerHTML = '<div class="alert alert-error">Judul tidak boleh kosong</div>';
+        showToast('Judul tidak boleh kosong', 'error');
         return;
       }
 
@@ -1564,13 +1598,14 @@
         });
         if (!res.ok) {
           const err = await res.json();
-          errorDiv.innerHTML = '<div class="alert alert-error">' + err.message + '</div>';
+          showToast(err.message || 'Gagal update berita', 'error');
           return;
         }
         closeEditNewsModal();
+        showToast('Berita berhasil diperbarui!', 'success');
         loadNewsAdmin();
       } catch (err) {
-        errorDiv.innerHTML = '<div class="alert alert-error">Error: ' + err.message + '</div>';
+        showToast('Error: ' + err.message, 'error');
       }
     }
 
@@ -1581,10 +1616,11 @@
           method: 'DELETE',
           headers: { 'Authorization': `Bearer ${token}` }
         });
-        if (!res.ok) { alert('Error menghapus berita'); return; }
+        if (!res.ok) { showToast('Error menghapus berita', 'error'); return; }
+        showToast('Berita berhasil dihapus', 'success');
         loadNewsAdmin();
       } catch (err) {
-        alert('Error: ' + err.message);
+        showToast('Error: ' + err.message, 'error');
       }
     }
 
@@ -1664,11 +1700,9 @@
       const image = document.getElementById('image').value;
       const link = document.getElementById('link').value;
       const emoji = document.getElementById('emoji').value;
-      const errorDiv = document.getElementById('formError');
-      errorDiv.innerHTML = '';
 
       if (!title) {
-        errorDiv.innerHTML = '<div class="alert alert-error">Judul tidak boleh kosong</div>';
+        showToast('Judul tidak boleh kosong', 'error');
         return;
       }
 
@@ -1684,11 +1718,11 @@
 
         if (!response.ok) {
           const err = await response.json();
-          errorDiv.innerHTML = '<div class="alert alert-error">' + err.message + '</div>';
+          showToast(err.message || 'Gagal menyimpan karya', 'error');
           return;
         }
 
-        errorDiv.innerHTML = '<div class="alert alert-success">Karya berhasil ditambahkan!</div>';
+        showToast('Karya berhasil ditambahkan!', 'success');
 
         document.getElementById('title').value = '';
         document.getElementById('category').value = '';
@@ -1699,12 +1733,9 @@
         currentTags = [];
         renderTags();
 
-        setTimeout(() => {
-          loadPortfolio();
-          errorDiv.innerHTML = '';
-        }, 1500);
+        loadPortfolio();
       } catch (err) {
-        errorDiv.innerHTML = '<div class="alert alert-error">Error: ' + err.message + '</div>';
+        showToast('Error: ' + err.message, 'error');
       }
     }
 
@@ -1736,11 +1767,9 @@
       const image = document.getElementById('editImage').value;
       const link = document.getElementById('editLink').value;
       const emoji = document.getElementById('editEmoji').value;
-      const errorDiv = document.getElementById('editFormError');
-      errorDiv.innerHTML = '';
 
       if (!title) {
-        errorDiv.innerHTML = '<div class="alert alert-error">Judul tidak boleh kosong</div>';
+        showToast('Judul tidak boleh kosong', 'error');
         return;
       }
 
@@ -1756,14 +1785,15 @@
 
         if (!response.ok) {
           const err = await response.json();
-          errorDiv.innerHTML = '<div class="alert alert-error">' + err.message + '</div>';
+          showToast(err.message || 'Gagal memperbarui karya', 'error');
           return;
         }
 
         closeEditModal();
+        showToast('Karya berhasil diperbarui!', 'success');
         loadPortfolio();
       } catch (err) {
-        errorDiv.innerHTML = '<div class="alert alert-error">Error: ' + err.message + '</div>';
+        showToast('Error: ' + err.message, 'error');
       }
     }
 
@@ -1776,10 +1806,11 @@
           headers: { 'Authorization': `Bearer ${token}` }
         });
 
-        if (!response.ok) { alert('Error menghapus karya'); return; }
+        if (!response.ok) { showToast('Error menghapus karya', 'error'); return; }
+        showToast('Karya berhasil dihapus', 'success');
         loadPortfolio();
       } catch (err) {
-        alert('Error: ' + err.message);
+        showToast('Error: ' + err.message, 'error');
       }
     }
   </script>
