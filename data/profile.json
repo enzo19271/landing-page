@@ -1,0 +1,24 @@
+{
+  "name": "Enzo Fahrezi",
+  "title": "Web Developer & Creative",
+  "bio": "Solo developer dan mahasiswa yang bergerak di bidang web development, videografi, fotografi, desain grafis, IT support, dan social media management.",
+  "photo": "",
+  "email": "",
+  "phone": "",
+  "location": "",
+  "socialLinks": {
+    "instagram": "https://instagram.com/nzofhrzi",
+    "tiktok": "https://tiktok.com/@top.senpai_",
+    "github": "",
+    "linkedin": ""
+  },
+  "skills": [
+    { "name": "Web Development", "level": 90 },
+    { "name": "Videography", "level": 75 },
+    { "name": "Photography", "level": 75 },
+    { "name": "Graphic Design", "level": 70 },
+    { "name": "IT Support", "level": 80 },
+    { "name": "Social Media Management", "level": 70 }
+  ],
+  "updatedAt": "2024-08-11T00:00:00.000Z"
+}
