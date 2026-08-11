@@ -113,7 +113,6 @@ export default async function handler(req, res) {
     const path = new URL(`http://localhost${url}`).pathname;
     const parts = path.split('/').filter(Boolean);
     
-    // Vercel already parses JSON bodies into req.body automatically
     let body = req.body || {};
     if (typeof body === 'string') {
       try {
@@ -168,11 +167,21 @@ export default async function handler(req, res) {
       return;
     }
 
-    // ─── PUBLIC: GET NEWS ────────────────────────────────────────────────
+    // ─── PUBLIC: GET NEWS (SORTED BY CUSTOM RELEASE DATE) ────────────────
     if (method === 'GET' && parts[1] === 'news') {
       try {
         const data = await getGitHubFile('data/news.json');
-        res.status(200).json(JSON.parse(data));
+        const news = JSON.parse(data);
+        
+        // Urutkan berita berdasarkan releaseDate (terbaru di atas)
+        if (Array.isArray(news.items)) {
+          news.items.sort((a, b) => {
+            const dateA = new Date(a.releaseDate || a.createdAt || 0);
+            const dateB = new Date(b.releaseDate || b.createdAt || 0);
+            return dateB - dateA;
+          });
+        }
+        res.status(200).json(news);
       } catch (err) {
         res.status(200).json({ items: [] });
       }
@@ -401,7 +410,7 @@ export default async function handler(req, res) {
       return;
     }
 
-    // ─── ADMIN: GET EXPERIENCE (ALL) ──────────────────────────────────────
+    // ─── ADMIN: GET EXPERIENCE ────────────────────────────────────────────
     if (method === 'GET' && parts[1] === 'admin' && parts[2] === 'experience') {
       const payload = verifyToken(headers.authorization?.split(' ')[1]);
       if (!payload) return res.status(401).json({ message: 'Unauthorized' });
@@ -468,13 +477,21 @@ export default async function handler(req, res) {
       return;
     }
 
-    // ─── ADMIN: GET NEWS (ALL) ───────────────────────────────────────────
+    // ─── ADMIN: GET NEWS (SORTED) ─────────────────────────────────────────
     if (method === 'GET' && parts[1] === 'admin' && parts[2] === 'news') {
       const payload = verifyToken(headers.authorization?.split(' ')[1]);
       if (!payload) return res.status(401).json({ message: 'Unauthorized' });
       try {
         const data = await getGitHubFile('data/news.json');
-        res.status(200).json(JSON.parse(data));
+        const news = JSON.parse(data);
+        if (Array.isArray(news.items)) {
+          news.items.sort((a, b) => {
+            const dateA = new Date(a.releaseDate || a.createdAt || 0);
+            const dateB = new Date(b.releaseDate || b.createdAt || 0);
+            return dateB - dateA;
+          });
+        }
+        res.status(200).json(news);
       } catch {
         res.status(200).json({ items: [] });
       }
@@ -491,7 +508,19 @@ export default async function handler(req, res) {
           const data = await getGitHubFile('data/news.json');
           news = JSON.parse(data);
         } catch {}
-        const newItem = { id: Date.now().toString(), ...body, createdAt: new Date().toISOString() };
+        
+        const todayStr = new Date().toISOString().split('T')[0];
+        const newItem = {
+          id: Date.now().toString(),
+          title: body.title || '',
+          summary: body.summary || '',
+          image: body.image || '',
+          sourceUrl: body.sourceUrl || '',
+          content: body.content || '',
+          releaseDate: body.releaseDate || todayStr, // Fallback ke tanggal hari ini jika kosong
+          createdAt: new Date().toISOString()
+        };
+        
         news.items.unshift(newItem);
         await updateGitHubFile('data/news.json', JSON.stringify(news, null, 2), 'Add news item');
         res.status(201).json(newItem);
@@ -510,7 +539,15 @@ export default async function handler(req, res) {
         const news = JSON.parse(data);
         const idx = news.items.findIndex(n => n.id === parts[3]);
         if (idx === -1) return res.status(404).json({ message: 'News not found' });
-        news.items[idx] = { ...news.items[idx], ...body };
+        
+        const todayStr = new Date().toISOString().split('T')[0];
+        news.items[idx] = { 
+          ...news.items[idx], 
+          ...body,
+          releaseDate: body.releaseDate || news.items[idx].releaseDate || todayStr,
+          updatedAt: new Date().toISOString()
+        };
+
         await updateGitHubFile('data/news.json', JSON.stringify(news, null, 2), 'Update news item');
         res.status(200).json(news.items[idx]);
       } catch (err) {
