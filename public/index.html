@@ -58,7 +58,6 @@
       min-height: 100vh;
       line-height: 1.6;
       overflow-x: hidden;
-      /* Subtle ambient background glow using Google Colors */
       background-image: 
         radial-gradient(circle at 10% 0%, rgba(26, 115, 232, 0.05) 0%, transparent 40%),
         radial-gradient(circle at 40% 0%, rgba(234, 67, 53, 0.04) 0%, transparent 40%),
@@ -1129,7 +1128,6 @@
           .join('');
         document.getElementById('socialLinks').innerHTML = socialHtml;
 
-        // Render skills dari payload yang sama
         const skillsContent = document.getElementById('skillsContent');
         if (!p.skills || p.skills.length === 0) {
           skillsContent.innerHTML = '<p class="empty-state">Belum ada skill ditambahkan.</p>';
@@ -1225,7 +1223,7 @@
       if (e.target.id === 'lightbox') closeLightbox();
     });
 
-    // ─── NEWS ───────────────────────────────────────────────────────────
+    // ─── NEWS (PERBAIKAN PEMBACAAN TANGGAL RILIS CUSTOM) ────────────────
     async function loadNews() {
       const content = document.getElementById('newsContent');
       try {
@@ -1238,7 +1236,19 @@
         }
 
         content.innerHTML = `<div class="news-grid">${data.items.map(item => {
-          const date = item.createdAt ? new Date(item.createdAt).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }) : '';
+          // Membaca releaseDate (custom) terlebih dahulu, jika tidak ada baru gunakan createdAt
+          const rawDate = item.releaseDate || item.createdAt;
+          let date = '';
+          if (rawDate) {
+            const cleanDateStr = rawDate.split('T')[0];
+            const [year, month, day] = cleanDateStr.split('-');
+            if (year && month && day) {
+              date = new Date(year, month - 1, day).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+            } else {
+              date = new Date(rawDate).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+            }
+          }
+
           const imageHtml = item.image
             ? `<img src="${item.image}" alt="${escapeHtml(item.title)}">`
             : `<i class="fa-regular fa-newspaper"></i>`;
