@@ -181,19 +181,19 @@
     .add-skill-row { display: grid; grid-template-columns: 1fr 100px auto; gap: 10px; margin-top: 15px; }
     .add-skill-row button { width: auto; padding: 10px 16px; }
 
-    /* GALLERY */
-    .gallery-admin-grid {
+    /* CERTIFICATES */
+    .cert-admin-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
       gap: 16px;
       margin-top: 20px;
     }
 
-    .gallery-admin-item { position: relative; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
-    .gallery-admin-item img { width: 100%; height: 140px; object-fit: cover; display: block; }
-    .gallery-admin-caption { padding: 8px; font-size: 0.8em; color: #555; background: #f9f9f9; }
+    .cert-admin-item { position: relative; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
+    .cert-admin-item img { width: 100%; height: 140px; object-fit: cover; display: block; }
+    .cert-admin-caption { padding: 8px; font-size: 0.8em; color: #555; background: #f9f9f9; }
 
-    .gallery-admin-delete {
+    .cert-admin-delete {
       position: absolute; top: 6px; right: 6px; width: auto; padding: 4px 9px;
       background: rgba(220,53,69,0.9); font-size: 0.85em; border-radius: 50%;
     }
@@ -284,7 +284,8 @@
 
     <div class="tab-nav">
       <button class="tab-btn active" onclick="switchTab('profile')">👤 Profil & Skill</button>
-      <button class="tab-btn" onclick="switchTab('gallery')">🖼️ Galeri</button>
+      <button class="tab-btn" onclick="switchTab('experience')">🧭 Pengalaman</button>
+      <button class="tab-btn" onclick="switchTab('certificates')">🏆 Sertifikat</button>
       <button class="tab-btn" onclick="switchTab('news')">📰 Berita</button>
       <button class="tab-btn" onclick="switchTab('portfolio')">💼 Portfolio</button>
     </div>
@@ -375,27 +376,103 @@
         </div>
       </div>
 
-      <!-- ═══ TAB: GALLERY ═══ -->
-      <div id="tab-gallery" class="tab-panel">
+      <!-- ═══ TAB: EXPERIENCE ═══ -->
+      <div id="tab-experience" class="tab-panel">
         <div class="section">
-          <h2>Tambah Foto</h2>
-          <div id="galleryFormError"></div>
-          <div class="form-group">
-            <label for="galleryPhotoInput">Pilih Foto</label>
-            <input type="file" id="galleryPhotoInput" accept="image/*" onchange="handleGalleryFileChange(event)">
-            <p class="hint">Otomatis dikompres sebelum disimpan.</p>
+          <h2>Tambah Pengalaman</h2>
+          <div id="expFormError"></div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="expType">Jenis</label>
+              <select id="expType">
+                <option value="kerja">Pengalaman Kerja</option>
+                <option value="organisasi">Pengalaman Organisasi</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="expPosition">Posisi / Jabatan</label>
+              <input type="text" id="expPosition" placeholder="Sekretaris, Staff IT, dll.">
+            </div>
           </div>
-          <div id="galleryPreviewWrap"></div>
+
           <div class="form-group full">
-            <label for="galleryCaption">Caption (opsional)</label>
-            <input type="text" id="galleryCaption" placeholder="Keterangan foto">
+            <label for="expOrganization">Nama Instansi / Organisasi</label>
+            <input type="text" id="expOrganization" placeholder="BUMDES, Unmuh Babel, dll.">
           </div>
-          <button class="submit-btn" onclick="uploadGalleryPhoto()">Upload Foto</button>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="expStartDate">Mulai</label>
+              <input type="text" id="expStartDate" placeholder="mis. Jan 2023">
+            </div>
+            <div class="form-group">
+              <label for="expEndDate">Selesai</label>
+              <input type="text" id="expEndDate" placeholder="mis. Des 2024">
+            </div>
+          </div>
+
+          <div class="form-group full" style="display:flex; align-items:center; gap:10px;">
+            <input type="checkbox" id="expCurrent" style="width:auto;" onchange="document.getElementById('expEndDate').disabled = this.checked">
+            <label for="expCurrent" style="margin:0;">Masih berlangsung sampai sekarang</label>
+          </div>
+
+          <div class="form-group full">
+            <label for="expDescription">Deskripsi</label>
+            <textarea id="expDescription" placeholder="Jelaskan tanggung jawab/aktivitas..."></textarea>
+          </div>
+
+          <button class="submit-btn" onclick="handleSaveExperience()">
+            <span id="expSubmitBtnText">Tambah Pengalaman</span>
+          </button>
         </div>
 
         <div class="section">
-          <h2>Galeri Saya</h2>
-          <div id="galleryAdminList"></div>
+          <h2>Daftar Pengalaman</h2>
+          <div id="experienceListAdmin" class="item-list"></div>
+        </div>
+      </div>
+
+      <!-- ═══ TAB: CERTIFICATES ═══ -->
+      <div id="tab-certificates" class="tab-panel">
+        <div class="section">
+          <h2>Tambah Sertifikat</h2>
+          <div id="certFormError"></div>
+
+          <div class="form-group">
+            <label for="certImageInput">Foto Sertifikat</label>
+            <input type="file" id="certImageInput" accept="image/*" onchange="handleCertFileChange(event)">
+            <p class="hint">Otomatis dikompres sebelum disimpan.</p>
+          </div>
+          <div id="certPreviewWrap"></div>
+
+          <div class="form-group full">
+            <label for="certTitle">Nama Sertifikat</label>
+            <input type="text" id="certTitle" placeholder="mis. Sertifikat Pelatihan Web Development">
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="certIssuer">Penerbit</label>
+              <input type="text" id="certIssuer" placeholder="mis. Dicoding, Unmuh Babel">
+            </div>
+            <div class="form-group">
+              <label for="certDate">Tanggal</label>
+              <input type="text" id="certDate" placeholder="mis. Agustus 2025">
+            </div>
+          </div>
+
+          <div class="form-group full">
+            <label for="certUrl">Link Verifikasi (opsional)</label>
+            <input type="url" id="certUrl" placeholder="https://verifikasi-sertifikat.com/id">
+          </div>
+
+          <button class="submit-btn" onclick="uploadCertificate()">Upload Sertifikat</button>
+        </div>
+
+        <div class="section">
+          <h2>Daftar Sertifikat</h2>
+          <div id="certAdminList"></div>
         </div>
       </div>
 
@@ -599,7 +676,7 @@
 
     let profileData = { skills: [], socialLinks: {} };
     let newProfilePhoto = null;    // base64 pending upload
-    let newGalleryPhoto = null;    // base64 pending upload
+    let newCertImage = null;       // base64 pending upload
     let newNewsImage = null;       // base64 pending upload
     let editNewsImage = null;      // base64 pending upload (edit)
     let editingNewsId = null;
@@ -698,7 +775,8 @@
       document.getElementById('loginView').style.display = 'none';
       document.getElementById('dashboardView').style.display = 'block';
       loadProfile();
-      loadGallery();
+      loadExperienceAdmin();
+      loadCertificatesAdmin();
       loadNewsAdmin();
       loadPortfolio();
     }
@@ -850,31 +928,32 @@
       }
     }
 
-    // ─── GALLERY ────────────────────────────────────────────────────────
-    async function handleGalleryFileChange(e) {
-      const file = e.target.files[0];
-      if (!file) return;
-      const dataUrl = await compressImage(file, 1000, 0.72);
-      newGalleryPhoto = dataUrl;
-      document.getElementById('galleryPreviewWrap').innerHTML = `<img src="${dataUrl}" style="max-width:200px; border-radius:8px; margin-bottom:15px;">`;
-    }
-
-    async function uploadGalleryPhoto() {
-      const errorDiv = document.getElementById('galleryFormError');
+    // ─── EXPERIENCE ─────────────────────────────────────────────────────
+    async function handleSaveExperience() {
+      const errorDiv = document.getElementById('expFormError');
       errorDiv.innerHTML = '';
 
-      if (!newGalleryPhoto) {
-        errorDiv.innerHTML = '<div class="alert alert-error">Pilih foto terlebih dahulu</div>';
+      const position = document.getElementById('expPosition').value;
+      const organization = document.getElementById('expOrganization').value;
+      if (!position || !organization) {
+        errorDiv.innerHTML = '<div class="alert alert-error">Posisi dan instansi tidak boleh kosong</div>';
         return;
       }
 
-      const caption = document.getElementById('galleryCaption').value;
+      const current = document.getElementById('expCurrent').checked;
 
       try {
-        const res = await fetch(`${API_BASE}/admin/gallery`, {
+        const res = await fetch(`${API_BASE}/admin/experience`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-          body: JSON.stringify({ url: newGalleryPhoto, caption })
+          body: JSON.stringify({
+            type: document.getElementById('expType').value,
+            position, organization,
+            startDate: document.getElementById('expStartDate').value,
+            endDate: current ? '' : document.getElementById('expEndDate').value,
+            current,
+            description: document.getElementById('expDescription').value
+          })
         });
         if (!res.ok) {
           const err = await res.json();
@@ -882,50 +961,155 @@
           return;
         }
 
-        newGalleryPhoto = null;
-        document.getElementById('galleryPhotoInput').value = '';
-        document.getElementById('galleryCaption').value = '';
-        document.getElementById('galleryPreviewWrap').innerHTML = '';
-        errorDiv.innerHTML = '<div class="alert alert-success">Foto berhasil diupload!</div>';
+        document.getElementById('expPosition').value = '';
+        document.getElementById('expOrganization').value = '';
+        document.getElementById('expStartDate').value = '';
+        document.getElementById('expEndDate').value = '';
+        document.getElementById('expEndDate').disabled = false;
+        document.getElementById('expCurrent').checked = false;
+        document.getElementById('expDescription').value = '';
+
+        errorDiv.innerHTML = '<div class="alert alert-success">Pengalaman berhasil ditambahkan!</div>';
         setTimeout(() => { errorDiv.innerHTML = ''; }, 1500);
-        loadGallery();
+        loadExperienceAdmin();
       } catch (err) {
         errorDiv.innerHTML = '<div class="alert alert-error">Error: ' + err.message + '</div>';
       }
     }
 
-    async function loadGallery() {
+    async function loadExperienceAdmin() {
       try {
-        const res = await fetch(`${API_BASE}/admin/gallery`, { headers: { 'Authorization': `Bearer ${token}` } });
+        const res = await fetch(`${API_BASE}/admin/experience`, { headers: { 'Authorization': `Bearer ${token}` } });
         const data = await res.json();
-        const list = document.getElementById('galleryAdminList');
+        const list = document.getElementById('experienceListAdmin');
 
-        if (!data.photos || !data.photos.length) {
-          list.innerHTML = '<p style="color:#999;">Belum ada foto.</p>';
+        if (!data.items || !data.items.length) {
+          list.innerHTML = '<p style="color:#999; text-align:center;">Belum ada pengalaman</p>';
           return;
         }
 
-        list.innerHTML = `<div class="gallery-admin-grid">${data.photos.map(p => `
-          <div class="gallery-admin-item">
-            <button class="gallery-admin-delete" onclick="deleteGalleryPhoto('${p.id}')">×</button>
-            <img src="${p.url}" alt="">
-            ${p.caption ? `<div class="gallery-admin-caption">${p.caption}</div>` : ''}
-          </div>
-        `).join('')}</div>`;
+        const sorted = [...data.items].sort((a, b) => (b.startDate || '').localeCompare(a.startDate || ''));
+
+        list.innerHTML = sorted.map(item => {
+          const period = `${item.startDate || ''}${item.current ? ' - Sekarang' : (item.endDate ? ' - ' + item.endDate : '')}`;
+          const typeLabel = item.type === 'organisasi' ? 'Organisasi' : 'Kerja';
+          return `
+            <div class="list-item">
+              <div class="list-item-info">
+                <div class="list-item-title">${item.position} — ${item.organization}</div>
+                <div class="list-item-meta">${typeLabel} · ${period}</div>
+                <div class="list-item-desc">${item.description || ''}</div>
+              </div>
+              <div class="list-item-actions">
+                <button class="delete-btn" onclick="deleteExperience('${item.id}')">Hapus</button>
+              </div>
+            </div>
+          `;
+        }).join('');
       } catch (err) {
-        console.error('Error loading gallery:', err);
+        console.error('Error loading experience:', err);
       }
     }
 
-    async function deleteGalleryPhoto(id) {
-      if (!confirm('Yakin ingin menghapus foto ini?')) return;
+    async function deleteExperience(id) {
+      if (!confirm('Yakin ingin menghapus pengalaman ini?')) return;
       try {
-        const res = await fetch(`${API_BASE}/admin/gallery/${id}`, {
+        const res = await fetch(`${API_BASE}/admin/experience/${id}`, {
           method: 'DELETE',
           headers: { 'Authorization': `Bearer ${token}` }
         });
-        if (!res.ok) { alert('Error menghapus foto'); return; }
-        loadGallery();
+        if (!res.ok) { alert('Error menghapus pengalaman'); return; }
+        loadExperienceAdmin();
+      } catch (err) {
+        alert('Error: ' + err.message);
+      }
+    }
+
+    // ─── CERTIFICATES ───────────────────────────────────────────────────
+    async function handleCertFileChange(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const dataUrl = await compressImage(file, 1000, 0.75);
+      newCertImage = dataUrl;
+      document.getElementById('certPreviewWrap').innerHTML = `<img src="${dataUrl}" style="max-width:200px; border-radius:8px; margin-bottom:15px;">`;
+    }
+
+    async function uploadCertificate() {
+      const errorDiv = document.getElementById('certFormError');
+      errorDiv.innerHTML = '';
+
+      const title = document.getElementById('certTitle').value;
+      if (!title) {
+        errorDiv.innerHTML = '<div class="alert alert-error">Nama sertifikat tidak boleh kosong</div>';
+        return;
+      }
+
+      try {
+        const res = await fetch(`${API_BASE}/admin/certificates`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+          body: JSON.stringify({
+            title,
+            issuer: document.getElementById('certIssuer').value,
+            date: document.getElementById('certDate').value,
+            url: document.getElementById('certUrl').value,
+            image: newCertImage || ''
+          })
+        });
+        if (!res.ok) {
+          const err = await res.json();
+          errorDiv.innerHTML = '<div class="alert alert-error">' + err.message + '</div>';
+          return;
+        }
+
+        newCertImage = null;
+        document.getElementById('certImageInput').value = '';
+        document.getElementById('certTitle').value = '';
+        document.getElementById('certIssuer').value = '';
+        document.getElementById('certDate').value = '';
+        document.getElementById('certUrl').value = '';
+        document.getElementById('certPreviewWrap').innerHTML = '';
+
+        errorDiv.innerHTML = '<div class="alert alert-success">Sertifikat berhasil diupload!</div>';
+        setTimeout(() => { errorDiv.innerHTML = ''; }, 1500);
+        loadCertificatesAdmin();
+      } catch (err) {
+        errorDiv.innerHTML = '<div class="alert alert-error">Error: ' + err.message + '</div>';
+      }
+    }
+
+    async function loadCertificatesAdmin() {
+      try {
+        const res = await fetch(`${API_BASE}/admin/certificates`, { headers: { 'Authorization': `Bearer ${token}` } });
+        const data = await res.json();
+        const list = document.getElementById('certAdminList');
+
+        if (!data.certificates || !data.certificates.length) {
+          list.innerHTML = '<p style="color:#999;">Belum ada sertifikat.</p>';
+          return;
+        }
+
+        list.innerHTML = `<div class="cert-admin-grid">${data.certificates.map(c => `
+          <div class="cert-admin-item">
+            <button class="cert-admin-delete" onclick="deleteCertificate('${c.id}')">×</button>
+            ${c.image ? `<img src="${c.image}" alt="">` : ''}
+            <div class="cert-admin-caption">${c.title}${c.issuer ? ' · ' + c.issuer : ''}</div>
+          </div>
+        `).join('')}</div>`;
+      } catch (err) {
+        console.error('Error loading certificates:', err);
+      }
+    }
+
+    async function deleteCertificate(id) {
+      if (!confirm('Yakin ingin menghapus sertifikat ini?')) return;
+      try {
+        const res = await fetch(`${API_BASE}/admin/certificates/${id}`, {
+          method: 'DELETE',
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (!res.ok) { alert('Error menghapus sertifikat'); return; }
+        loadCertificatesAdmin();
       } catch (err) {
         alert('Error: ' + err.message);
       }
