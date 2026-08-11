@@ -56,7 +56,6 @@
       color: var(--text-main);
       min-height: 100vh;
       line-height: 1.6;
-      /* Subtle light Google multi-color gradient ambient */
       background-image: 
         radial-gradient(circle at 10% 0%, rgba(26, 115, 232, 0.05) 0%, transparent 40%),
         radial-gradient(circle at 40% 0%, rgba(234, 67, 53, 0.04) 0%, transparent 40%),
@@ -100,23 +99,10 @@
       transform: translateX(100%);
     }
 
-    .toast-success {
-      border-left: 5px solid var(--google-green);
-    }
-
-    .toast-success i {
-      color: var(--google-green);
-      font-size: 1.2em;
-    }
-
-    .toast-error {
-      border-left: 5px solid var(--google-red);
-    }
-
-    .toast-error i {
-      color: var(--google-red);
-      font-size: 1.2em;
-    }
+    .toast-success { border-left: 5px solid var(--google-green); }
+    .toast-success i { color: var(--google-green); font-size: 1.2em; }
+    .toast-error { border-left: 5px solid var(--google-red); }
+    .toast-error i { color: var(--google-red); font-size: 1.2em; }
 
     /* ─── LOGIN VIEW ─── */
     .login-container {
@@ -157,9 +143,7 @@
       letter-spacing: -0.02em;
     }
 
-    .form-group {
-      margin-bottom: 20px;
-    }
+    .form-group { margin-bottom: 20px; }
 
     label {
       display: block;
@@ -170,7 +154,7 @@
     }
 
     input[type="password"], input[type="text"], input[type="url"], input[type="number"],
-    input[type="email"], input[type="tel"], input[type="file"],
+    input[type="email"], input[type="tel"], input[type="file"], input[type="date"],
     textarea, select {
       width: 100%;
       padding: 12px 16px;
@@ -183,14 +167,8 @@
       transition: var(--transition);
     }
 
-    input::placeholder, textarea::placeholder {
-      color: var(--text-sub);
-    }
-
-    select option {
-      background: #ffffff;
-      color: var(--text-main);
-    }
+    input::placeholder, textarea::placeholder { color: var(--text-sub); }
+    select option { background: #ffffff; color: var(--text-main); }
 
     input:focus, textarea:focus, select:focus {
       outline: none;
@@ -199,10 +177,7 @@
       box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.15);
     }
 
-    textarea {
-      resize: vertical;
-      min-height: 110px;
-    }
+    textarea { resize: vertical; min-height: 110px; }
 
     button {
       width: 100%;
@@ -228,15 +203,10 @@
       transform: translateY(-1px);
     }
 
-    button:active {
-      transform: translateY(0);
-    }
+    button:active { transform: translateY(0); }
 
     /* ─── DASHBOARD VIEW ─── */
-    .dashboard {
-      display: none;
-      min-height: 100vh;
-    }
+    .dashboard { display: none; min-height: 100vh; }
 
     .dashboard-header {
       background: rgba(255, 255, 255, 0.95);
@@ -273,9 +243,7 @@
       gap: 10px;
     }
 
-    .dashboard-header h1 i {
-      color: var(--google-blue);
-    }
+    .dashboard-header h1 i { color: var(--google-blue); }
 
     .logout-btn {
       background: var(--google-red-light);
@@ -396,10 +364,7 @@
       box-shadow: none;
     }
 
-    .tag-item button:hover {
-      color: var(--google-red);
-      transform: none;
-    }
+    .tag-item button:hover { color: var(--google-red); transform: none; }
 
     /* PHOTO PREVIEW */
     .photo-preview-row {
@@ -456,10 +421,7 @@
       box-shadow: none;
     }
 
-    .skill-row button:hover {
-      background: var(--google-red);
-      color: #ffffff;
-    }
+    .skill-row button:hover { background: var(--google-red); color: #ffffff; }
 
     .add-skill-row {
       display: grid;
@@ -468,15 +430,8 @@
       margin-top: 16px;
     }
 
-    .add-skill-row button {
-      width: auto;
-      padding: 12px 20px;
-      background: var(--google-green);
-    }
-
-    .add-skill-row button:hover {
-      background: var(--google-green-hover);
-    }
+    .add-skill-row button { width: auto; padding: 12px 20px; background: var(--google-green); }
+    .add-skill-row button:hover { background: var(--google-green-hover); }
 
     /* CERTIFICATES ADMIN */
     .cert-admin-grid {
@@ -528,9 +483,7 @@
       box-shadow: 0 2px 6px rgba(0,0,0,0.2);
     }
 
-    .cert-admin-delete:hover {
-      background: var(--google-red-hover);
-    }
+    .cert-admin-delete:hover { background: var(--google-red-hover); }
 
     /* ITEM LISTS */
     .item-list { margin-top: 20px; }
@@ -575,10 +528,7 @@
       border: 1px solid rgba(26, 115, 232, 0.2);
     }
 
-    .edit-btn:hover { 
-      background: var(--google-blue); 
-      color: #ffffff;
-    }
+    .edit-btn:hover { background: var(--google-blue); color: #ffffff; }
 
     .delete-btn {
       background: var(--google-red-light);
@@ -586,10 +536,7 @@
       border: 1px solid rgba(234, 67, 53, 0.2);
     }
 
-    .delete-btn:hover { 
-      background: var(--google-red); 
-      color: #ffffff;
-    }
+    .delete-btn:hover { background: var(--google-red); color: #ffffff; }
 
     /* MODAL */
     .modal {
@@ -902,9 +849,17 @@
             <input type="text" id="newsTitle" placeholder="Judul berita">
           </div>
 
-          <div class="form-group">
-            <label for="newsImageInput">Foto Gambar (opsional)</label>
-            <input type="file" id="newsImageInput" accept="image/*" onchange="handleNewsFileChange(event)">
+          <!-- FITUR FIELD JADWAL RILIS BERITA (CUSTOM RELEASE DATE) -->
+          <div class="form-row">
+            <div class="form-group">
+              <label for="newsReleaseDate">Jadwal / Tanggal Rilis Custom (opsional)</label>
+              <input type="date" id="newsReleaseDate">
+              <p class="hint">Biarkan kosong jika ingin menggunakan tanggal hari ini secara otomatis.</p>
+            </div>
+            <div class="form-group">
+              <label for="newsImageInput">Foto Gambar (opsional)</label>
+              <input type="file" id="newsImageInput" accept="image/*" onchange="handleNewsFileChange(event)">
+            </div>
           </div>
           <div id="newsPreviewWrap"></div>
 
@@ -1060,9 +1015,15 @@
         <input type="text" id="editNewsTitle" placeholder="Judul berita">
       </div>
 
-      <div class="form-group">
-        <label for="editNewsImageInput">Ganti Foto (opsional)</label>
-        <input type="file" id="editNewsImageInput" accept="image/*" onchange="handleEditNewsFileChange(event)">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="editNewsReleaseDate">Jadwal / Tanggal Rilis Custom</label>
+          <input type="date" id="editNewsReleaseDate">
+        </div>
+        <div class="form-group">
+          <label for="editNewsImageInput">Ganti Foto (opsional)</label>
+          <input type="file" id="editNewsImageInput" accept="image/*" onchange="handleEditNewsFileChange(event)">
+        </div>
       </div>
       <div id="editNewsPreviewWrap"></div>
 
@@ -1550,7 +1511,7 @@
       }
     }
 
-    // ─── NEWS ───────────────────────────────────────────────────────────
+    // ─── NEWS (DENGAN TANGGAL RILIS CUSTOM) ─────────────────────────────
     async function handleNewsFileChange(e) {
       const file = e.target.files[0];
       if (!file) return;
@@ -1564,6 +1525,7 @@
       const summary = document.getElementById('newsSummary').value;
       const sourceUrl = document.getElementById('newsSourceUrl').value;
       const content = document.getElementById('newsContent').value;
+      const releaseDate = document.getElementById('newsReleaseDate').value; // Custom Release Date
 
       if (!title) {
         showToast('Judul tidak boleh kosong', 'error');
@@ -1578,7 +1540,8 @@
             title, summary,
             image: newNewsImage || '',
             sourceUrl: sourceUrl || '',
-            content: content || ''
+            content: content || '',
+            releaseDate: releaseDate || '' // dikirim ke server
           })
         });
         if (!res.ok) {
@@ -1591,6 +1554,7 @@
         document.getElementById('newsSummary').value = '';
         document.getElementById('newsSourceUrl').value = '';
         document.getElementById('newsContent').value = '';
+        document.getElementById('newsReleaseDate').value = '';
         document.getElementById('newsImageInput').value = '';
         document.getElementById('newsPreviewWrap').innerHTML = '';
         newNewsImage = null;
@@ -1613,19 +1577,25 @@
           return;
         }
 
-        list.innerHTML = data.items.map(item => `
-          <div class="list-item">
-            <div class="list-item-info">
-              <div class="list-item-title">${item.title}</div>
-              <div class="list-item-meta">${item.sourceUrl ? 'Link eksternal' : (item.content ? 'Ditulis sendiri' : 'Tanpa detail')}</div>
-              <div class="list-item-desc">${item.summary || ''}</div>
+        list.innerHTML = data.items.map(item => {
+          const dateStr = item.releaseDate 
+            ? new Date(item.releaseDate).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })
+            : (item.createdAt ? new Date(item.createdAt).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }) : 'Tanggal tidak diatur');
+
+          return `
+            <div class="list-item">
+              <div class="list-item-info">
+                <div class="list-item-title">${item.title}</div>
+                <div class="list-item-meta">Rilis: ${dateStr} · ${item.sourceUrl ? 'Link eksternal' : (item.content ? 'Ditulis sendiri' : 'Tanpa detail')}</div>
+                <div class="list-item-desc">${item.summary || ''}</div>
+              </div>
+              <div class="list-item-actions">
+                <button class="edit-btn" onclick='openEditNewsModal(${JSON.stringify(item).replace(/'/g, "&apos;")})'><i class="fa-solid fa-pen-to-square"></i> Edit</button>
+                <button class="delete-btn" onclick="deleteNews('${item.id}')"><i class="fa-solid fa-trash-can"></i> Hapus</button>
+              </div>
             </div>
-            <div class="list-item-actions">
-              <button class="edit-btn" onclick='openEditNewsModal(${JSON.stringify(item).replace(/'/g, "&apos;")})'><i class="fa-solid fa-pen-to-square"></i> Edit</button>
-              <button class="delete-btn" onclick="deleteNews('${item.id}')"><i class="fa-solid fa-trash-can"></i> Hapus</button>
-            </div>
-          </div>
-        `).join('');
+          `;
+        }).join('');
       } catch (err) {
         console.error('Error loading news:', err);
       }
@@ -1638,6 +1608,7 @@
       document.getElementById('editNewsSummary').value = item.summary || '';
       document.getElementById('editNewsSourceUrl').value = item.sourceUrl || '';
       document.getElementById('editNewsContent').value = item.content || '';
+      document.getElementById('editNewsReleaseDate').value = item.releaseDate ? item.releaseDate.split('T')[0] : '';
       document.getElementById('editNewsPreviewWrap').innerHTML = item.image
         ? `<img src="${item.image}" style="max-width:200px; border-radius:8px; margin-bottom:15px; border: 1px solid var(--border-color);">`
         : '';
@@ -1670,7 +1641,8 @@
         title,
         summary: document.getElementById('editNewsSummary').value,
         sourceUrl: document.getElementById('editNewsSourceUrl').value,
-        content: document.getElementById('editNewsContent').value
+        content: document.getElementById('editNewsContent').value,
+        releaseDate: document.getElementById('editNewsReleaseDate').value || ''
       };
       if (editNewsImage !== null) payload.image = editNewsImage;
 
