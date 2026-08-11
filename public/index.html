@@ -3,13 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Portfolio - Feriawan</title>
+  <title>CV & Portfolio - Enzo Fahrezi</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -18,50 +14,201 @@
       color: #333;
     }
 
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 40px 20px;
+    .container { max-width: 1100px; margin: 0 auto; padding: 40px 20px; }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 40px;
     }
 
-    header {
+    nav a {
+      color: white;
+      text-decoration: none;
+      background: rgba(255,255,255,0.15);
+      padding: 8px 18px;
+      border-radius: 20px;
+      font-size: 0.9em;
+      transition: all 0.3s;
+    }
+
+    nav a:hover { background: rgba(255,255,255,0.3); }
+
+    .admin-link { background: rgba(0,0,0,0.2) !important; }
+
+    /* HERO / PROFILE */
+    .hero {
       text-align: center;
       color: white;
       margin-bottom: 60px;
     }
 
-    h1 {
-      font-size: 3em;
-      margin-bottom: 10px;
-      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-    }
-
-    .subtitle {
-      font-size: 1.2em;
-      opacity: 0.95;
+    .profile-photo {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid rgba(255,255,255,0.6);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
       margin-bottom: 20px;
+      background: rgba(255,255,255,0.15);
     }
 
-    .admin-link {
-      display: inline-block;
-      background: rgba(255,255,255,0.2);
+    .profile-photo-placeholder {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3em;
+      margin: 0 auto 20px;
+      background: rgba(255,255,255,0.15);
+      border: 4px solid rgba(255,255,255,0.6);
+    }
+
+    h1 { font-size: 2.6em; margin-bottom: 6px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
+    .hero-title { font-size: 1.15em; opacity: 0.95; margin-bottom: 16px; }
+    .hero-bio { max-width: 620px; margin: 0 auto 18px; line-height: 1.6; opacity: 0.95; }
+
+    .social-links { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
+    .social-links a {
       color: white;
-      padding: 8px 16px;
-      border-radius: 20px;
       text-decoration: none;
-      transition: all 0.3s;
-      font-size: 0.9em;
+      background: rgba(255,255,255,0.2);
+      padding: 6px 14px;
+      border-radius: 16px;
+      font-size: 0.85em;
+    }
+    .social-links a:hover { background: rgba(255,255,255,0.35); }
+
+    /* SECTIONS */
+    section { margin-bottom: 60px; }
+
+    .section-title {
+      color: white;
+      font-size: 1.7em;
+      text-align: center;
+      margin-bottom: 30px;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
     }
 
-    .admin-link:hover {
-      background: rgba(255,255,255,0.3);
+    /* SKILLS */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 18px;
+      background: white;
+      padding: 30px;
+      border-radius: 14px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
     }
 
+    .skill-item { }
+    .skill-name { display: flex; justify-content: space-between; font-weight: 600; margin-bottom: 6px; font-size: 0.95em; }
+    .skill-bar-bg { background: #eee; border-radius: 10px; height: 10px; overflow: hidden; }
+    .skill-bar-fill { height: 100%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 10px; }
+
+    /* GALLERY */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 16px;
+    }
+
+    .gallery-item {
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+      cursor: pointer;
+      background: white;
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.3s;
+    }
+
+    .gallery-item:hover img { transform: scale(1.05); }
+
+    .gallery-caption {
+      padding: 10px 12px;
+      font-size: 0.85em;
+      color: #555;
+    }
+
+    .lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.85);
+      z-index: 2000;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .lightbox.active { display: flex; }
+    .lightbox img { max-width: 100%; max-height: 85vh; border-radius: 8px; }
+    .lightbox-close {
+      position: absolute;
+      top: 20px; right: 30px;
+      color: white;
+      font-size: 2em;
+      cursor: pointer;
+      background: none;
+      border: none;
+    }
+
+    /* NEWS */
+    .news-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 24px;
+    }
+
+    .news-card {
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      transition: transform 0.3s;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .news-card:hover { transform: translateY(-5px); }
+
+    .news-image {
+      width: 100%;
+      height: 180px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 2.5em;
+      overflow: hidden;
+    }
+
+    .news-image img { width: 100%; height: 100%; object-fit: cover; }
+
+    .news-content { padding: 18px; flex: 1; display: flex; flex-direction: column; }
+    .news-title { font-size: 1.1em; font-weight: bold; margin-bottom: 8px; }
+    .news-summary { color: #666; font-size: 0.9em; line-height: 1.5; flex: 1; margin-bottom: 12px; }
+    .news-date { font-size: 0.78em; color: #999; margin-bottom: 8px; }
+    .news-link { color: #667eea; text-decoration: none; font-weight: 500; font-size: 0.9em; }
+    .news-link:hover { color: #764ba2; }
+
+    /* PORTFOLIO (existing works) */
     .portfolio-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-      gap: 30px;
-      margin-bottom: 40px;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 24px;
     }
 
     .work-card {
@@ -70,17 +217,13 @@
       overflow: hidden;
       box-shadow: 0 10px 30px rgba(0,0,0,0.2);
       transition: all 0.3s ease;
-      cursor: pointer;
     }
 
-    .work-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 15px 40px rgba(0,0,0,0.3);
-    }
+    .work-card:hover { transform: translateY(-5px); box-shadow: 0 15px 40px rgba(0,0,0,0.3); }
 
     .work-image {
       width: 100%;
-      height: 220px;
+      height: 200px;
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       display: flex;
       align-items: center;
@@ -90,200 +233,265 @@
       overflow: hidden;
     }
 
-    .work-image img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
+    .work-image img { width: 100%; height: 100%; object-fit: cover; }
 
-    .work-content {
-      padding: 20px;
-    }
-
-    .work-title {
-      font-size: 1.3em;
-      font-weight: bold;
-      margin-bottom: 8px;
-      color: #333;
-    }
-
+    .work-content { padding: 20px; }
+    .work-title { font-size: 1.25em; font-weight: bold; margin-bottom: 8px; }
     .work-category {
       display: inline-block;
       background: #f0f0f0;
       color: #666;
       padding: 4px 12px;
       border-radius: 20px;
-      font-size: 0.85em;
+      font-size: 0.82em;
       margin-bottom: 12px;
     }
+    .work-description { color: #666; font-size: 0.92em; line-height: 1.5; margin-bottom: 15px; }
+    .work-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+    .tag { background: #e8e8e8; color: #555; padding: 4px 10px; border-radius: 15px; font-size: 0.78em; }
+    .work-link { display: inline-block; color: #667eea; text-decoration: none; font-weight: 500; margin-top: 15px; }
+    .work-link:hover { color: #764ba2; }
 
-    .work-description {
-      color: #666;
-      font-size: 0.95em;
-      line-height: 1.5;
-      margin-bottom: 15px;
-    }
-
-    .work-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-
-    .tag {
-      background: #e8e8e8;
-      color: #555;
-      padding: 4px 10px;
-      border-radius: 15px;
-      font-size: 0.8em;
-    }
-
-    .work-link {
-      display: inline-block;
-      color: #667eea;
-      text-decoration: none;
-      font-weight: 500;
-      margin-top: 15px;
-      transition: color 0.3s;
-    }
-
-    .work-link:hover {
-      color: #764ba2;
-    }
-
-    .empty-state {
-      text-align: center;
-      padding: 60px 20px;
-      color: white;
-    }
-
-    .empty-state h2 {
-      font-size: 2em;
-      margin-bottom: 10px;
-    }
-
-    .loading {
-      text-align: center;
-      padding: 60px 20px;
-      color: white;
-      font-size: 1.2em;
-    }
+    .empty-state { text-align: center; padding: 40px 20px; color: rgba(255,255,255,0.85); }
+    .loading { text-align: center; padding: 40px 20px; color: white; }
 
     .spinner {
       border: 4px solid rgba(255,255,255,0.3);
       border-top: 4px solid white;
       border-radius: 50%;
-      width: 40px;
-      height: 40px;
+      width: 36px;
+      height: 36px;
       animation: spin 1s linear infinite;
-      margin: 20px auto;
+      margin: 15px auto;
     }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-
-    footer {
-      text-align: center;
-      color: white;
-      padding: 20px;
-      opacity: 0.8;
-    }
+    footer { text-align: center; color: white; padding: 20px; opacity: 0.8; }
 
     @media (max-width: 768px) {
-      h1 {
-        font-size: 2em;
-      }
-
-      .portfolio-grid {
-        grid-template-columns: 1fr;
-      }
+      h1 { font-size: 2em; }
+      .portfolio-grid, .news-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <header>
-      <h1>Portfolio</h1>
-      <p class="subtitle">Karya dan Proyek Terbaik Saya</p>
-      <a href="admin.html" class="admin-link">Admin Panel →</a>
-    </header>
+    <nav>
+      <a href="#profile">Profil</a>
+      <a href="#skills">Skill</a>
+      <a href="#gallery">Galeri</a>
+      <a href="#news">Berita</a>
+      <a href="#portfolio">Portfolio</a>
+      <a href="admin.html" class="admin-link">Admin →</a>
+    </nav>
 
-    <div id="content"></div>
+    <section id="profile" class="hero">
+      <div id="profilePhoto"><div class="profile-photo-placeholder">🙂</div></div>
+      <h1 id="profileName">Loading...</h1>
+      <p class="hero-title" id="profileTitle"></p>
+      <p class="hero-bio" id="profileBio"></p>
+      <div class="social-links" id="socialLinks"></div>
+    </section>
+
+    <section id="skills">
+      <h2 class="section-title">Skill</h2>
+      <div id="skillsContent" class="loading"><div class="spinner"></div></div>
+    </section>
+
+    <section id="gallery">
+      <h2 class="section-title">Galeri</h2>
+      <div id="galleryContent" class="loading"><div class="spinner"></div></div>
+    </section>
+
+    <section id="news">
+      <h2 class="section-title">Berita</h2>
+      <div id="newsContent" class="loading"><div class="spinner"></div></div>
+    </section>
+
+    <section id="portfolio">
+      <h2 class="section-title">Portfolio</h2>
+      <div id="portfolioContent" class="loading"><div class="spinner"></div></div>
+    </section>
 
     <footer>
-      <p>&copy; 2024 Feriawan. All rights reserved.</p>
+      <p>&copy; 2026 Enzo Fahrezi. All rights reserved.</p>
     </footer>
+  </div>
+
+  <div class="lightbox" id="lightbox">
+    <button class="lightbox-close" onclick="closeLightbox()">&times;</button>
+    <img id="lightboxImg" src="" alt="">
   </div>
 
   <script>
     const API_BASE = '/api';
 
-    async function loadPortfolio() {
-      const content = document.getElementById('content');
-      content.innerHTML = '<div class="loading"><div class="spinner"></div><p>Loading portfolio...</p></div>';
+    function escapeHtml(str) {
+      const div = document.createElement('div');
+      div.textContent = str || '';
+      return div.innerHTML;
+    }
 
+    // ─── PROFILE ────────────────────────────────────────────────────────
+    async function loadProfile() {
       try {
-        const response = await fetch(`${API_BASE}/portfolio`);
-        const data = await response.json();
+        const res = await fetch(`${API_BASE}/profile`);
+        const p = await res.json();
 
-        if (!data.works || data.works.length === 0) {
-          content.innerHTML = `
-            <div class="empty-state">
-              <h2>Portfolio Kosong</h2>
-              <p>Belum ada karya yang ditampilkan saat ini.</p>
+        document.getElementById('profileName').textContent = p.name || 'Nama Belum Diatur';
+        document.getElementById('profileTitle').textContent = p.title || '';
+        document.getElementById('profileBio').textContent = p.bio || '';
+
+        const photoDiv = document.getElementById('profilePhoto');
+        photoDiv.innerHTML = p.photo
+          ? `<img src="${p.photo}" class="profile-photo" alt="${escapeHtml(p.name)}">`
+          : `<div class="profile-photo-placeholder">🙂</div>`;
+
+        const links = p.socialLinks || {};
+        const linkLabels = { instagram: 'Instagram', tiktok: 'TikTok', github: 'GitHub', linkedin: 'LinkedIn' };
+        const socialHtml = Object.entries(links)
+          .filter(([, url]) => url)
+          .map(([key, url]) => `<a href="${url}" target="_blank">${linkLabels[key] || key}</a>`)
+          .join('');
+        document.getElementById('socialLinks').innerHTML = socialHtml;
+
+        // Render skills from the same payload
+        const skillsContent = document.getElementById('skillsContent');
+        if (!p.skills || p.skills.length === 0) {
+          skillsContent.innerHTML = '<p class="empty-state">Belum ada skill ditambahkan.</p>';
+        } else {
+          skillsContent.innerHTML = `<div class="skills-grid">${p.skills.map(s => `
+            <div class="skill-item">
+              <div class="skill-name"><span>${escapeHtml(s.name)}</span><span>${s.level || 0}%</span></div>
+              <div class="skill-bar-bg"><div class="skill-bar-fill" style="width:${s.level || 0}%"></div></div>
             </div>
-          `;
-          return;
+          `).join('')}</div>`;
         }
-
-        const grid = document.createElement('div');
-        grid.className = 'portfolio-grid';
-
-        data.works.forEach(work => {
-          const card = document.createElement('div');
-          card.className = 'work-card';
-          
-          const imageHtml = work.image ? `<img src="${work.image}" alt="${work.title}">` : `<div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 3em;">${work.emoji || '📁'}</div>`;
-          
-          const tagsHtml = work.tags ? work.tags.map(tag => `<span class="tag">${tag}</span>`).join('') : '';
-          
-          const linkHtml = work.link ? `<a href="${work.link}" target="_blank" class="work-link">Lihat Proyek →</a>` : '';
-
-          card.innerHTML = `
-            <div class="work-image">
-              ${imageHtml}
-            </div>
-            <div class="work-content">
-              <div class="work-title">${work.title}</div>
-              <span class="work-category">${work.category || 'Project'}</span>
-              <div class="work-description">${work.description || ''}</div>
-              <div class="work-tags">
-                ${tagsHtml}
-              </div>
-              ${linkHtml}
-            </div>
-          `;
-
-          grid.appendChild(card);
-        });
-
-        content.innerHTML = '';
-        content.appendChild(grid);
       } catch (err) {
-        console.error('Error loading portfolio:', err);
-        content.innerHTML = `
-          <div class="empty-state">
-            <h2>Error</h2>
-            <p>Terjadi kesalahan saat memuat portfolio.</p>
-          </div>
-        `;
+        console.error('Error loading profile:', err);
+        document.getElementById('profileName').textContent = 'Enzo Fahrezi';
+        document.getElementById('skillsContent').innerHTML = '<p class="empty-state">Gagal memuat skill.</p>';
       }
     }
 
-    // Load on page load
-    window.addEventListener('DOMContentLoaded', loadPortfolio);
+    // ─── GALLERY ────────────────────────────────────────────────────────
+    async function loadGallery() {
+      const content = document.getElementById('galleryContent');
+      try {
+        const res = await fetch(`${API_BASE}/gallery`);
+        const data = await res.json();
+
+        if (!data.photos || data.photos.length === 0) {
+          content.innerHTML = '<p class="empty-state">Belum ada foto di galeri.</p>';
+          return;
+        }
+
+        content.innerHTML = `<div class="gallery-grid">${data.photos.map(photo => `
+          <div class="gallery-item" onclick="openLightbox('${photo.url}')">
+            <img src="${photo.url}" alt="${escapeHtml(photo.caption || '')}" loading="lazy">
+            ${photo.caption ? `<div class="gallery-caption">${escapeHtml(photo.caption)}</div>` : ''}
+          </div>
+        `).join('')}</div>`;
+      } catch (err) {
+        console.error('Error loading gallery:', err);
+        content.innerHTML = '<p class="empty-state">Gagal memuat galeri.</p>';
+      }
+    }
+
+    function openLightbox(url) {
+      document.getElementById('lightboxImg').src = url;
+      document.getElementById('lightbox').classList.add('active');
+    }
+
+    function closeLightbox() {
+      document.getElementById('lightbox').classList.remove('active');
+    }
+
+    document.getElementById('lightbox').addEventListener('click', (e) => {
+      if (e.target.id === 'lightbox') closeLightbox();
+    });
+
+    // ─── NEWS ───────────────────────────────────────────────────────────
+    async function loadNews() {
+      const content = document.getElementById('newsContent');
+      try {
+        const res = await fetch(`${API_BASE}/news`);
+        const data = await res.json();
+
+        if (!data.items || data.items.length === 0) {
+          content.innerHTML = '<p class="empty-state">Belum ada berita.</p>';
+          return;
+        }
+
+        content.innerHTML = `<div class="news-grid">${data.items.map(item => {
+          const date = item.createdAt ? new Date(item.createdAt).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }) : '';
+          const imageHtml = item.image
+            ? `<img src="${item.image}" alt="${escapeHtml(item.title)}">`
+            : `📰`;
+          const linkHtml = item.sourceUrl
+            ? `<a href="${item.sourceUrl}" target="_blank" class="news-link">Baca selengkapnya →</a>`
+            : '';
+          return `
+            <div class="news-card">
+              <div class="news-image">${imageHtml}</div>
+              <div class="news-content">
+                <div class="news-date">${date}</div>
+                <div class="news-title">${escapeHtml(item.title)}</div>
+                <div class="news-summary">${escapeHtml(item.summary || '')}</div>
+                ${linkHtml}
+              </div>
+            </div>
+          `;
+        }).join('')}</div>`;
+      } catch (err) {
+        console.error('Error loading news:', err);
+        content.innerHTML = '<p class="empty-state">Gagal memuat berita.</p>';
+      }
+    }
+
+    // ─── PORTFOLIO ──────────────────────────────────────────────────────
+    async function loadPortfolio() {
+      const content = document.getElementById('portfolioContent');
+      try {
+        const res = await fetch(`${API_BASE}/portfolio`);
+        const data = await res.json();
+
+        if (!data.works || data.works.length === 0) {
+          content.innerHTML = '<p class="empty-state">Belum ada karya yang ditampilkan.</p>';
+          return;
+        }
+
+        content.innerHTML = `<div class="portfolio-grid">${data.works.map(work => {
+          const imageHtml = work.image
+            ? `<img src="${work.image}" alt="${escapeHtml(work.title)}">`
+            : `${work.emoji || '📁'}`;
+          const tagsHtml = (work.tags || []).map(tag => `<span class="tag">${escapeHtml(tag)}</span>`).join('');
+          const linkHtml = work.link ? `<a href="${work.link}" target="_blank" class="work-link">Lihat Proyek →</a>` : '';
+          return `
+            <div class="work-card">
+              <div class="work-image">${imageHtml}</div>
+              <div class="work-content">
+                <div class="work-title">${escapeHtml(work.title)}</div>
+                <span class="work-category">${escapeHtml(work.category || 'Project')}</span>
+                <div class="work-description">${escapeHtml(work.description || '')}</div>
+                <div class="work-tags">${tagsHtml}</div>
+                ${linkHtml}
+              </div>
+            </div>
+          `;
+        }).join('')}</div>`;
+      } catch (err) {
+        console.error('Error loading portfolio:', err);
+        content.innerHTML = '<p class="empty-state">Terjadi kesalahan saat memuat portfolio.</p>';
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      loadProfile();
+      loadGallery();
+      loadNews();
+      loadPortfolio();
+    });
   </script>
 </body>
 </html>
