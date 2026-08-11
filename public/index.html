@@ -13,18 +13,18 @@
 
   <style>
     :root {
-      --bg-body: #09090b;
+      --bg-body: #0a0a0c;
       --bg-card: #121215;
       --bg-card-hover: #1a1a1e;
       --border-color: rgba(255, 255, 255, 0.08);
-      --border-color-hover: rgba(255, 255, 255, 0.25);
+      --border-color-hover: rgba(255, 255, 255, 0.22);
       --text-main: #f4f4f5;
       --text-muted: #a1a1aa;
       --text-sub: #71717a;
       --accent-white: #ffffff;
-      --accent-black: #000000;
-      --radius-sm: 8px;
-      --radius-md: 16px;
+      --accent-black: #09090b;
+      --radius-sm: 10px;
+      --radius-md: 18px;
       --radius-lg: 24px;
       --transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     }
@@ -44,83 +44,280 @@
       line-height: 1.6;
       overflow-x: hidden;
       background-image: 
-        radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.03) 0%, transparent 70%),
-        radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.015) 0%, transparent 50%);
+        radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.04) 0%, transparent 60%),
+        radial-gradient(circle at 100% 50%, rgba(255, 255, 255, 0.02) 0%, transparent 40%);
     }
 
     .container {
-      max-width: 1080px;
+      max-width: 1100px;
       margin: 0 auto;
-      padding: 20px 24px 60px;
+      padding: 30px 24px 80px;
     }
 
-    /* HEADER & NAV */
-    header.sticky-nav {
+    /* ─── DESKTOP NAVBAR ─── */
+    .desktop-header {
       position: sticky;
       top: 20px;
-      z-index: 1000;
+      z-index: 900;
       margin-bottom: 50px;
     }
 
-    nav {
+    .desktop-nav {
       display: flex;
-      justify-content: center;
+      justify-content: space-between;
       align-items: center;
-      gap: 8px;
-      flex-wrap: wrap;
-      background: rgba(18, 18, 21, 0.75);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      padding: 8px 12px;
+      background: rgba(18, 18, 21, 0.8);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      padding: 10px 20px;
       border-radius: 100px;
       border: 1px solid var(--border-color);
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-      width: fit-content;
-      margin: 0 auto;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
     }
 
-    nav a {
+    .brand-logo {
+      font-weight: 800;
+      font-size: 1.1em;
+      color: var(--accent-white);
+      text-decoration: none;
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-badge {
+      background: rgba(255, 255, 255, 0.1);
+      font-size: 0.7em;
+      padding: 3px 10px;
+      border-radius: 100px;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .nav-links-desktop {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .nav-links-desktop a {
       color: var(--text-muted);
       text-decoration: none;
-      padding: 8px 18px;
+      padding: 8px 16px;
       border-radius: 100px;
       font-size: 0.88em;
       font-weight: 500;
       transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
     }
 
-    nav a:hover {
+    .nav-links-desktop a:hover {
       color: var(--accent-white);
       background: rgba(255, 255, 255, 0.08);
     }
 
-    .admin-link {
-      background: var(--accent-white) !important;
-      color: var(--accent-black) !important;
-      font-weight: 600 !important;
-      margin-left: 4px;
+    .nav-links-desktop .admin-link {
+      background: var(--accent-white);
+      color: var(--accent-black);
+      font-weight: 700;
+      margin-left: 8px;
     }
 
-    .admin-link:hover {
-      background: #e4e4e7 !important;
+    .nav-links-desktop .admin-link:hover {
+      background: #e4e4e7;
       transform: translateY(-1px);
     }
 
-    /* HERO / PROFILE */
+    /* ─── MOBILE HEADER & SIDEBAR DRAWER ─── */
+    .mobile-header {
+      display: none;
+      position: sticky;
+      top: 0;
+      z-index: 900;
+      background: rgba(10, 10, 12, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border-color);
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .menu-toggle-btn {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--accent-white);
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2em;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .menu-toggle-btn:active {
+      transform: scale(0.95);
+    }
+
+    /* Overlay Backdrop */
+    .sidebar-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(4px);
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transition: var(--transition);
+    }
+
+    .sidebar-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    /* Sidebar Panel (Inspirasi Gambar Referensi) */
+    .sidebar-drawer {
+      position: fixed;
+      top: 0;
+      left: -320px;
+      width: 300px;
+      height: 100%;
+      background: #ffffff; /* Putih bersih sesuai referensi */
+      color: #121212;
+      z-index: 1001;
+      padding: 24px 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 10px 0 30px rgba(0, 0, 0, 0.3);
+      overflow-y: auto;
+    }
+
+    .sidebar-drawer.open {
+      left: 0;
+    }
+
+    .sidebar-header {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 20px;
+    }
+
+    .sidebar-close-btn {
+      background: #f4f4f5;
+      border: 1px solid #e4e4e7;
+      color: #18181b;
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      font-size: 1.2em;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition);
+    }
+
+    .sidebar-close-btn:hover {
+      background: #e4e4e7;
+    }
+
+    .sidebar-menu {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .sidebar-menu a {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 18px;
+      border-radius: 16px;
+      text-decoration: none;
+      color: #27272a;
+      font-weight: 600;
+      font-size: 0.95em;
+      transition: var(--transition);
+    }
+
+    .sidebar-menu a i {
+      font-size: 1.15em;
+      width: 22px;
+      text-align: center;
+    }
+
+    /* Menu Aktif / Style Pill Hitam */
+    .sidebar-menu a.active,
+    .sidebar-menu a:hover {
+      background: #09090b;
+      color: #ffffff;
+    }
+
+    .sidebar-menu a.active i,
+    .sidebar-menu a:hover i {
+      color: #ffffff;
+    }
+
+    /* Card Promo / CTA Bawah Sidebar */
+    .sidebar-cta-card {
+      background: #09090b;
+      color: #ffffff;
+      padding: 20px;
+      border-radius: 20px;
+      margin-top: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .sidebar-cta-card h4 {
+      font-size: 1.05em;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .sidebar-cta-card p {
+      font-size: 0.82em;
+      color: #a1a1aa;
+      line-height: 1.5;
+      margin-bottom: 14px;
+    }
+
+    .sidebar-cta-card a {
+      display: inline-block;
+      background: #ffffff;
+      color: #09090b;
+      text-decoration: none;
+      padding: 8px 16px;
+      border-radius: 100px;
+      font-weight: 700;
+      font-size: 0.8em;
+      text-align: center;
+      width: 100%;
+    }
+
+    /* ─── HERO / PROFILE SECTION ─── */
     .hero {
       text-align: center;
       margin-bottom: 70px;
-      padding-top: 20px;
-      animation: fadeIn 0.8s ease-out;
+      padding-top: 10px;
     }
 
     .profile-photo, .profile-photo-placeholder {
-      width: 140px;
-      height: 140px;
+      width: 135px;
+      height: 135px;
       border-radius: 50%;
-      margin: 0 auto 24px;
+      margin: 0 auto 20px;
       border: 2px solid var(--border-color-hover);
-      box-shadow: 0 0 30px rgba(255, 255, 255, 0.05);
+      box-shadow: 0 0 35px rgba(255, 255, 255, 0.08);
       transition: var(--transition);
     }
 
@@ -139,9 +336,8 @@
     }
 
     .profile-photo:hover, .profile-photo-placeholder:hover {
-      transform: scale(1.03);
+      transform: scale(1.04);
       border-color: var(--accent-white);
-      box-shadow: 0 0 40px rgba(255, 255, 255, 0.12);
     }
 
     h1 {
@@ -149,7 +345,7 @@
       font-weight: 800;
       letter-spacing: -0.03em;
       color: var(--accent-white);
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
 
     .hero-title {
@@ -160,7 +356,7 @@
     }
 
     .hero-bio {
-      max-width: 620px;
+      max-width: 640px;
       margin: 0 auto 24px;
       line-height: 1.7;
       color: var(--text-sub);
@@ -186,7 +382,7 @@
       transition: var(--transition);
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
     }
 
     .social-links a:hover {
@@ -196,19 +392,18 @@
       transform: translateY(-2px);
     }
 
-    /* SECTIONS GENERAL */
+    /* ─── SECTIONS ─── */
     section {
       margin-bottom: 80px;
-      animation: fadeIn 1s ease-out;
     }
 
     .section-title {
       color: var(--accent-white);
-      font-size: 1.6em;
+      font-size: 1.5em;
       font-weight: 700;
       letter-spacing: -0.02em;
       text-align: center;
-      margin-bottom: 36px;
+      margin-bottom: 32px;
       position: relative;
       display: table;
       margin-left: auto;
@@ -218,7 +413,7 @@
     .section-title::after {
       content: '';
       display: block;
-      width: 40px;
+      width: 36px;
       height: 2px;
       background: var(--accent-white);
       margin: 10px auto 0;
@@ -279,7 +474,6 @@
       border: 1px solid var(--border-color);
       cursor: pointer;
       transition: var(--transition);
-      position: relative;
     }
 
     .gallery-item:hover {
@@ -298,7 +492,6 @@
 
     .gallery-item:hover img {
       transform: scale(1.05);
-      filter: brightness(1.1);
     }
 
     .gallery-caption {
@@ -315,7 +508,7 @@
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.9);
+      background: rgba(0, 0, 0, 0.92);
       backdrop-filter: blur(12px);
       z-index: 2000;
       align-items: center;
@@ -336,7 +529,6 @@
       border-radius: var(--radius-md);
       border: 1px solid var(--border-color-hover);
       box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
-      animation: zoomIn 0.3s ease;
     }
 
     .lightbox-close {
@@ -349,8 +541,8 @@
       background: none;
       border: none;
       line-height: 1;
-      transition: var(--transition);
       opacity: 0.7;
+      transition: var(--transition);
     }
 
     .lightbox-close:hover {
@@ -392,7 +584,6 @@
       font-size: 2.5em;
       overflow: hidden;
       border-bottom: 1px solid var(--border-color);
-      position: relative;
     }
 
     .news-image img, .work-image img {
@@ -442,7 +633,6 @@
       margin-bottom: 12px;
       width: fit-content;
       text-transform: uppercase;
-      letter-spacing: 0.04em;
     }
 
     .news-summary, .work-description {
@@ -487,10 +677,10 @@
       opacity: 0.8;
     }
 
-    /* STATE INDICATORS */
+    /* STATES */
     .empty-state {
       text-align: center;
-      padding: 50px 20px;
+      padding: 40px 20px;
       color: var(--text-sub);
       background: var(--bg-card);
       border: 1px dashed var(--border-color);
@@ -500,7 +690,7 @@
 
     .loading {
       text-align: center;
-      padding: 50px 20px;
+      padding: 40px 20px;
     }
 
     .spinner {
@@ -513,7 +703,11 @@
       margin: 0 auto;
     }
 
-    /* FOOTER */
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
     footer {
       text-align: center;
       color: var(--text-sub);
@@ -523,46 +717,77 @@
       margin-top: 60px;
     }
 
-    /* ANIMATIONS */
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(12px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes zoomIn {
-      from { transform: scale(0.95); opacity: 0; }
-      to { transform: scale(1); opacity: 1; }
-    }
-
-    /* RESPONSIVE DESIGN */
+    /* ─── RESPONSIVE RULES ─── */
     @media (max-width: 768px) {
+      .desktop-header { display: none; }
+      .mobile-header { display: flex; }
+      
       h1 { font-size: 2.1em; }
-      nav { gap: 4px; padding: 6px; }
-      nav a { padding: 6px 12px; font-size: 0.8em; }
-      .container { padding: 16px 16px 40px; }
+      .container { padding: 20px 16px 40px; }
       .news-grid, .portfolio-grid, .gallery-grid { grid-template-columns: 1fr; }
       .skills-grid { padding: 20px; }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <header class="sticky-nav">
-      <nav>
-        <a href="#profile">Profil</a>
-        <a href="#skills">Skill</a>
-        <a href="#gallery">Galeri</a>
-        <a href="#news">Berita</a>
-        <a href="#portfolio">Portfolio</a>
-        <a href="admin.html" class="admin-link">Admin &rarr;</a>
+
+  <!-- MOBILE HEADER (Tampilan Android/HP) -->
+  <div class="mobile-header">
+    <a href="#profile" class="brand-logo">
+      Enzo Fahrezi <span class="brand-badge">PRO</span>
+    </a>
+    <button class="menu-toggle-btn" id="openSidebar" aria-label="Buka Menu">
+      <i class="fa-solid fa-bars-staggered"></i>
+    </button>
+  </div>
+
+  <!-- SIDEBAR OVERLAY & DRAWER (Referensi Gambar) -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+  <aside class="sidebar-drawer" id="sidebarDrawer">
+    <div>
+      <div class="sidebar-header">
+        <button class="sidebar-close-btn" id="closeSidebar" aria-label="Tutup Menu">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <nav class="sidebar-menu">
+        <a href="#profile" class="active"><i class="fa-solid fa-house"></i> Beranda Utama</a>
+        <a href="#skills"><i class="fa-solid fa-lightbulb"></i> Skills</a>
+        <a href="#gallery"><i class="fa-solid fa-images"></i> Galeri</a>
+        <a href="#news"><i class="fa-solid fa-newspaper"></i> Berita Acara</a>
+        <a href="#portfolio"><i class="fa-solid fa-briefcase"></i> Portfolio</a>
+        <a href="admin.html"><i class="fa-solid fa-user-gear"></i> CV Resume / Admin</a>
       </nav>
+    </div>
+
+    <!-- CTA Box Bawah Sidebar -->
+    <div class="sidebar-cta-card">
+      <h4>Tertarik bekerja sama?</h4>
+      <p>Saya terbuka untuk peluang dan kolaborasi menarik!</p>
+      <a href="#profile">Hubungi Saya</a>
+    </div>
+  </aside>
+
+  <div class="container">
+    <!-- DESKTOP NAVBAR (Tampilan Laptop/PC) -->
+    <header class="desktop-header">
+      <div class="desktop-nav">
+        <a href="#profile" class="brand-logo">
+          Enzo Fahrezi <span class="brand-badge">PRO</span>
+        </a>
+        <nav class="nav-links-desktop">
+          <a href="#profile">Profil</a>
+          <a href="#skills">Skill</a>
+          <a href="#gallery">Galeri</a>
+          <a href="#news">Berita</a>
+          <a href="#portfolio">Portfolio</a>
+          <a href="admin.html" class="admin-link">Admin →</a>
+        </nav>
+      </div>
     </header>
 
+    <!-- HERO SECTION -->
     <section id="profile" class="hero">
       <div id="profilePhoto"><div class="profile-photo-placeholder"><i class="fa-regular fa-user"></i></div></div>
       <h1 id="profileName">Loading...</h1>
@@ -571,21 +796,25 @@
       <div class="social-links" id="socialLinks"></div>
     </section>
 
+    <!-- SKILLS SECTION -->
     <section id="skills">
       <h2 class="section-title">Keahlian</h2>
       <div id="skillsContent" class="loading"><div class="spinner"></div></div>
     </section>
 
+    <!-- GALLERY SECTION -->
     <section id="gallery">
       <h2 class="section-title">Galeri</h2>
       <div id="galleryContent" class="loading"><div class="spinner"></div></div>
     </section>
 
+    <!-- NEWS SECTION -->
     <section id="news">
-      <h2 class="section-title">Berita Utama</h2>
+      <h2 class="section-title">Berita & Pengalaman</h2>
       <div id="newsContent" class="loading"><div class="spinner"></div></div>
     </section>
 
+    <!-- PORTFOLIO SECTION -->
     <section id="portfolio">
       <h2 class="section-title">Portfolio Karya</h2>
       <div id="portfolioContent" class="loading"><div class="spinner"></div></div>
@@ -596,13 +825,46 @@
     </footer>
   </div>
 
+  <!-- LIGHTBOX -->
   <div class="lightbox" id="lightbox">
     <button class="lightbox-close" onclick="closeLightbox()">&times;</button>
     <img id="lightboxImg" src="" alt="">
   </div>
 
+  <!-- SCRIPT INTEGRASI & INTERAKSI -->
   <script>
     const API_BASE = '/api';
+
+    // ─── LOGIKA SIDEBAR DRAWER ─────────────────────────────────────────
+    const openSidebarBtn = document.getElementById('openSidebar');
+    const closeSidebarBtn = document.getElementById('closeSidebar');
+    const sidebarDrawer = document.getElementById('sidebarDrawer');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
+    const sidebarLinks = document.querySelectorAll('.sidebar-menu a');
+
+    function openMenu() {
+      sidebarDrawer.classList.add('open');
+      sidebarOverlay.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeMenu() {
+      sidebarDrawer.classList.remove('open');
+      sidebarOverlay.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    if (openSidebarBtn) openSidebarBtn.addEventListener('click', openMenu);
+    if (closeSidebarBtn) closeSidebarBtn.addEventListener('click', closeMenu);
+    if (sidebarOverlay) sidebarOverlay.addEventListener('click', closeMenu);
+
+    sidebarLinks.forEach(link => {
+      link.addEventListener('click', (e) => {
+        sidebarLinks.forEach(l => l.classList.remove('active'));
+        link.classList.add('active');
+        closeMenu();
+      });
+    });
 
     function escapeHtml(str) {
       const div = document.createElement('div');
@@ -640,7 +902,7 @@
           .join('');
         document.getElementById('socialLinks').innerHTML = socialHtml;
 
-        // Render skills from the same payload
+        // Render skills dari payload yang sama
         const skillsContent = document.getElementById('skillsContent');
         if (!p.skills || p.skills.length === 0) {
           skillsContent.innerHTML = '<p class="empty-state">Belum ada skill ditambahkan.</p>';
