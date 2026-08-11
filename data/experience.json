@@ -1,6 +1,17 @@
 {
   "items": [
     {
+      "id": "1786424697107",
+      "type": "kerja",
+      "position": "Fotografer",
+      "organization": "Lanskap Kenangen",
+      "startDate": "Juni 2024",
+      "endDate": "",
+      "current": true,
+      "description": "Seorang fotografer independen",
+      "createdAt": "2026-08-11T05:04:57.107Z"
+    },
+    {
       "id": "1786423571558",
       "type": "kerja",
       "position": "Pegawai BUMDES",
