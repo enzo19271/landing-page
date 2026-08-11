@@ -884,15 +884,16 @@
             <textarea id="description" placeholder="Jelaskan tentang proyek ini..."></textarea>
           </div>
 
-          <div class="form-row">
-            <div class="form-group">
-              <label for="image">URL Gambar Banner</label>
-              <input type="url" id="image" placeholder="https://example.com/image.jpg">
-            </div>
-            <div class="form-group">
-              <label for="link">Link Proyek Live</label>
-              <input type="url" id="link" placeholder="https://example.com">
-            </div>
+          <div class="form-group">
+            <label for="imageInput">Gambar Banner</label>
+            <input type="file" id="imageInput" accept="image/*" onchange="handleWorkImageChange(event)">
+            <p class="hint">Otomatis dikompres sebelum disimpan.</p>
+          </div>
+          <div id="imagePreviewWrap"></div>
+
+          <div class="form-group full">
+            <label for="link">Link Proyek Live</label>
+            <input type="url" id="link" placeholder="https://example.com">
           </div>
 
           <div class="form-group full">
@@ -945,15 +946,16 @@
         <textarea id="editDescription" placeholder="Jelaskan tentang proyek ini..."></textarea>
       </div>
 
-      <div class="form-row">
-        <div class="form-group">
-          <label for="editImage">URL Gambar Banner</label>
-          <input type="url" id="editImage" placeholder="https://example.com/image.jpg">
-        </div>
-        <div class="form-group">
-          <label for="editLink">Link Proyek Live</label>
-          <input type="url" id="editLink" placeholder="https://example.com">
-        </div>
+      <div class="form-group">
+        <label for="editImageInput">Ganti Gambar Banner (opsional)</label>
+        <input type="file" id="editImageInput" accept="image/*" onchange="handleEditWorkImageChange(event)">
+        <p class="hint">Otomatis dikompres sebelum disimpan.</p>
+      </div>
+      <div id="editImagePreviewWrap"></div>
+
+      <div class="form-group full">
+        <label for="editLink">Link Proyek Live</label>
+        <input type="url" id="editLink" placeholder="https://example.com">
       </div>
 
       <div class="form-group full">
@@ -1018,6 +1020,8 @@
     let newNewsImage = null;       // base64 pending upload
     let editNewsImage = null;      // base64 pending upload (edit)
     let editingNewsId = null;
+    let newWorkImage = null;       // base64 pending upload (portfolio - tambah)
+    let editWorkImage = null;      // base64 pending upload (portfolio - edit)
 
     // ─── FLOATING TOAST NOTIFICATION SYSTEM ─────────────────────────────
     function showToast(message, type = 'success') {
@@ -1663,6 +1667,23 @@
       `).join('');
     }
 
+    // ─── PORTFOLIO IMAGE HANDLERS ───────────────────────────────────────
+    async function handleWorkImageChange(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const dataUrl = await compressImage(file, 1200, 0.75);
+      newWorkImage = dataUrl;
+      document.getElementById('imagePreviewWrap').innerHTML = `<img src="${dataUrl}" style="max-width:220px; border-radius:8px; margin-bottom:15px; border: 1px solid var(--border-color);">`;
+    }
+
+    async function handleEditWorkImageChange(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const dataUrl = await compressImage(file, 1200, 0.75);
+      editWorkImage = dataUrl;
+      document.getElementById('editImagePreviewWrap').innerHTML = `<img src="${dataUrl}" style="max-width:220px; border-radius:8px; margin-bottom:15px; border: 1px solid var(--border-color);">`;
+    }
+
     // ─── PORTFOLIO ──────────────────────────────────────────────────────
     async function loadPortfolio() {
       try {
@@ -1697,7 +1718,6 @@
       const title = document.getElementById('title').value;
       const category = document.getElementById('category').value;
       const description = document.getElementById('description').value;
-      const image = document.getElementById('image').value;
       const link = document.getElementById('link').value;
       const emoji = document.getElementById('emoji').value;
 
@@ -1712,7 +1732,7 @@
           headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
           body: JSON.stringify({
             title, category: category || 'Project', description,
-            image: image || '', link: link || '', emoji: emoji || '📁', tags: currentTags
+            image: newWorkImage || '', link: link || '', emoji: emoji || '📁', tags: currentTags
           })
         });
 
@@ -1727,9 +1747,11 @@
         document.getElementById('title').value = '';
         document.getElementById('category').value = '';
         document.getElementById('description').value = '';
-        document.getElementById('image').value = '';
+        document.getElementById('imageInput').value = '';
+        document.getElementById('imagePreviewWrap').innerHTML = '';
         document.getElementById('link').value = '';
         document.getElementById('emoji').value = '';
+        newWorkImage = null;
         currentTags = [];
         renderTags();
 
@@ -1742,11 +1764,15 @@
     function openEditModal(id, work) {
       editingWorkId = id;
       editingTags = work.tags || [];
+      editWorkImage = null;
 
       document.getElementById('editTitle').value = work.title;
       document.getElementById('editCategory').value = work.category;
       document.getElementById('editDescription').value = work.description;
-      document.getElementById('editImage').value = work.image;
+      document.getElementById('editImageInput').value = '';
+      document.getElementById('editImagePreviewWrap').innerHTML = work.image
+        ? `<img src="${work.image}" style="max-width:220px; border-radius:8px; margin-bottom:15px; border: 1px solid var(--border-color);">`
+        : '';
       document.getElementById('editLink').value = work.link;
       document.getElementById('editEmoji').value = work.emoji;
 
@@ -1758,13 +1784,13 @@
       document.getElementById('editModal').classList.remove('active');
       editingWorkId = null;
       editingTags = [];
+      editWorkImage = null;
     }
 
     async function handleUpdateWork() {
       const title = document.getElementById('editTitle').value;
       const category = document.getElementById('editCategory').value;
       const description = document.getElementById('editDescription').value;
-      const image = document.getElementById('editImage').value;
       const link = document.getElementById('editLink').value;
       const emoji = document.getElementById('editEmoji').value;
 
@@ -1773,14 +1799,17 @@
         return;
       }
 
+      const payload = {
+        title, category: category || 'Project', description,
+        link: link || '', emoji: emoji || '📁', tags: editingTags
+      };
+      if (editWorkImage !== null) payload.image = editWorkImage;
+
       try {
         const response = await fetch(`${API_BASE}/admin/work/${editingWorkId}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-          body: JSON.stringify({
-            title, category: category || 'Project', description,
-            image: image || '', link: link || '', emoji: emoji || '📁', tags: editingTags
-          })
+          body: JSON.stringify(payload)
         });
 
         if (!response.ok) {
