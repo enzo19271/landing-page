@@ -1,21 +1,6 @@
 {
   "works": [
     {
-      "id": "2",
-      "title": "LMS Unmuh Babel",
-      "category": "Web Application",
-      "description": "Learning Management System untuk universitas dengan fitur kelas online, tugas, dan nilai",
-      "emoji": "📚",
-      "image": "",
-      "link": "https://github.com/feriawan/lms-unmuh-babel",
-      "tags": [
-        "Vercel",
-        "Node.js",
-        "GitHub API"
-      ],
-      "createdAt": "2024-08-11T00:00:00.000Z"
-    },
-    {
       "id": "3",
       "title": "Academy EJI",
       "category": "Web Application",
