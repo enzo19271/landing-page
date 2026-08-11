@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portfolio - Feriawan</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      color: #333;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    header {
+      text-align: center;
+      color: white;
+      margin-bottom: 60px;
+    }
+
+    h1 {
+      font-size: 3em;
+      margin-bottom: 10px;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .subtitle {
+      font-size: 1.2em;
+      opacity: 0.95;
+      margin-bottom: 20px;
+    }
+
+    .admin-link {
+      display: inline-block;
+      background: rgba(255,255,255,0.2);
+      color: white;
+      padding: 8px 16px;
+      border-radius: 20px;
+      text-decoration: none;
+      transition: all 0.3s;
+      font-size: 0.9em;
+    }
+
+    .admin-link:hover {
+      background: rgba(255,255,255,0.3);
+    }
+
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 30px;
+      margin-bottom: 40px;
+    }
+
+    .work-card {
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .work-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+    }
+
+    .work-image {
+      width: 100%;
+      height: 220px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 3em;
+      overflow: hidden;
+    }
+
+    .work-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .work-content {
+      padding: 20px;
+    }
+
+    .work-title {
+      font-size: 1.3em;
+      font-weight: bold;
+      margin-bottom: 8px;
+      color: #333;
+    }
+
+    .work-category {
+      display: inline-block;
+      background: #f0f0f0;
+      color: #666;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.85em;
+      margin-bottom: 12px;
+    }
+
+    .work-description {
+      color: #666;
+      font-size: 0.95em;
+      line-height: 1.5;
+      margin-bottom: 15px;
+    }
+
+    .work-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tag {
+      background: #e8e8e8;
+      color: #555;
+      padding: 4px 10px;
+      border-radius: 15px;
+      font-size: 0.8em;
+    }
+
+    .work-link {
+      display: inline-block;
+      color: #667eea;
+      text-decoration: none;
+      font-weight: 500;
+      margin-top: 15px;
+      transition: color 0.3s;
+    }
+
+    .work-link:hover {
+      color: #764ba2;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: white;
+    }
+
+    .empty-state h2 {
+      font-size: 2em;
+      margin-bottom: 10px;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 60px 20px;
+      color: white;
+      font-size: 1.2em;
+    }
+
+    .spinner {
+      border: 4px solid rgba(255,255,255,0.3);
+      border-top: 4px solid white;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin: 20px auto;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    footer {
+      text-align: center;
+      color: white;
+      padding: 20px;
+      opacity: 0.8;
+    }
+
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 2em;
+      }
+
+      .portfolio-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Portfolio</h1>
+      <p class="subtitle">Karya dan Proyek Terbaik Saya</p>
+      <a href="admin.html" class="admin-link">Admin Panel →</a>
+    </header>
+
+    <div id="content"></div>
+
+    <footer>
+      <p>&copy; 2024 Feriawan. All rights reserved.</p>
+    </footer>
+  </div>
+
+  <script>
+    const API_BASE = '/api';
+
+    async function loadPortfolio() {
+      const content = document.getElementById('content');
+      content.innerHTML = '<div class="loading"><div class="spinner"></div><p>Loading portfolio...</p></div>';
+
+      try {
+        const response = await fetch(`${API_BASE}/portfolio`);
+        const data = await response.json();
+
+        if (!data.works || data.works.length === 0) {
+          content.innerHTML = `
+            <div class="empty-state">
+              <h2>Portfolio Kosong</h2>
+              <p>Belum ada karya yang ditampilkan saat ini.</p>
+            </div>
+          `;
+          return;
+        }
+
+        const grid = document.createElement('div');
+        grid.className = 'portfolio-grid';
+
+        data.works.forEach(work => {
+          const card = document.createElement('div');
+          card.className = 'work-card';
+          
+          const imageHtml = work.image ? `<img src="${work.image}" alt="${work.title}">` : `<div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 3em;">${work.emoji || '📁'}</div>`;
+          
+          const tagsHtml = work.tags ? work.tags.map(tag => `<span class="tag">${tag}</span>`).join('') : '';
+          
+          const linkHtml = work.link ? `<a href="${work.link}" target="_blank" class="work-link">Lihat Proyek →</a>` : '';
+
+          card.innerHTML = `
+            <div class="work-image">
+              ${imageHtml}
+            </div>
+            <div class="work-content">
+              <div class="work-title">${work.title}</div>
+              <span class="work-category">${work.category || 'Project'}</span>
+              <div class="work-description">${work.description || ''}</div>
+              <div class="work-tags">
+                ${tagsHtml}
+              </div>
+              ${linkHtml}
+            </div>
+          `;
+
+          grid.appendChild(card);
+        });
+
+        content.innerHTML = '';
+        content.appendChild(grid);
+      } catch (err) {
+        console.error('Error loading portfolio:', err);
+        content.innerHTML = `
+          <div class="empty-state">
+            <h2>Error</h2>
+            <p>Terjadi kesalahan saat memuat portfolio.</p>
+          </div>
+        `;
+      }
+    }
+
+    // Load on page load
+    window.addEventListener('DOMContentLoaded', loadPortfolio);
+  </script>
+</body>
+</html>
