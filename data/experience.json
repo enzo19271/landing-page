@@ -1,6 +1,17 @@
 {
   "items": [
     {
+      "id": "1786423571558",
+      "type": "kerja",
+      "position": "Pegawai BUMDES",
+      "organization": "BUMDES",
+      "startDate": "2024",
+      "endDate": "2025",
+      "current": false,
+      "description": "- Menjaga toko\n- Merapikan dan menata barang barang penjualan termasuk sembako serta gas LPG\n- Mengelola dan Mencatat Transaksi Mingguan\n- Membuat Laporan Bulanan Excel\n- Mengoperasikan Mesin Fotocopy Sbg nya",
+      "createdAt": "2026-08-11T04:46:11.558Z"
+    },
+    {
       "id": "1786418561789",
       "type": "kerja",
       "position": "IT Support",
