@@ -11,6 +11,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
+  <!-- HTML2CANVAS LIBRARY UNTUK CONVERT HTML KE PNG -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
   <style>
     :root {
       --bg-body: #f8f9fa;
@@ -137,11 +140,25 @@
       background: var(--google-blue-light);
     }
 
+    .nav-links-desktop .download-btn {
+      background: var(--google-green-light);
+      color: var(--google-green);
+      border: 1px solid rgba(52, 168, 83, 0.2);
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .nav-links-desktop .download-btn:hover {
+      background: var(--google-green);
+      color: #ffffff;
+      transform: translateY(-1px);
+    }
+
     .nav-links-desktop .admin-link {
       background: var(--google-blue);
       color: #ffffff;
       font-weight: 700;
-      margin-left: 8px;
+      margin-left: 4px;
       box-shadow: 0 2px 6px rgba(26, 115, 232, 0.25);
     }
 
@@ -190,10 +207,6 @@
       transition: var(--transition);
     }
 
-    .menu-toggle-btn:active {
-      transform: scale(0.95);
-    }
-
     .sidebar-overlay {
       position: fixed;
       inset: 0;
@@ -228,9 +241,7 @@
       overflow-y: auto;
     }
 
-    .sidebar-drawer.open {
-      left: 0;
-    }
+    .sidebar-drawer.open { left: 0; }
 
     .sidebar-header {
       display: flex;
@@ -251,11 +262,6 @@
       align-items: center;
       justify-content: center;
       transition: var(--transition);
-    }
-
-    .sidebar-close-btn:hover {
-      background: var(--google-red-light);
-      color: var(--google-red);
     }
 
     .sidebar-menu {
@@ -284,15 +290,15 @@
       color: var(--text-sub);
     }
 
-    .sidebar-menu a.active,
-    .sidebar-menu a:hover {
+    .sidebar-menu a.active, .sidebar-menu a:hover {
       background: var(--google-blue-light);
       color: var(--google-blue);
     }
 
-    .sidebar-menu a.active i,
-    .sidebar-menu a:hover i {
-      color: var(--google-blue);
+    .sidebar-menu a.download-png-mobile {
+      background: var(--google-green-light);
+      color: var(--google-green);
+      font-weight: 700;
     }
 
     .sidebar-cta-card {
@@ -318,20 +324,6 @@
       margin-bottom: 14px;
     }
 
-    .sidebar-cta-card a {
-      display: inline-block;
-      background: var(--google-blue);
-      color: #ffffff;
-      text-decoration: none;
-      padding: 9px 16px;
-      border-radius: 100px;
-      font-weight: 700;
-      font-size: 0.82em;
-      text-align: center;
-      width: 100%;
-      box-shadow: 0 2px 6px rgba(26, 115, 232, 0.25);
-    }
-
     /* ─── HERO / PROFILE SECTION ─── */
     .hero {
       text-align: center;
@@ -349,10 +341,7 @@
       transition: var(--transition);
     }
 
-    .profile-photo {
-      object-fit: cover;
-      display: block;
-    }
+    .profile-photo { object-fit: cover; display: block; }
 
     .profile-photo-placeholder {
       display: flex;
@@ -361,11 +350,6 @@
       font-size: 3em;
       background: var(--google-blue-light);
       color: var(--google-blue);
-    }
-
-    .profile-photo:hover, .profile-photo-placeholder:hover {
-      transform: scale(1.04);
-      box-shadow: 0 12px 30px rgba(26, 115, 232, 0.25);
     }
 
     h1 {
@@ -411,20 +395,16 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.02);
     }
 
     .social-links a:hover {
       color: var(--google-blue);
       background: var(--google-blue-light);
-      border-color: rgba(26, 115, 232, 0.3);
       transform: translateY(-2px);
     }
 
     /* ─── SECTIONS GENERAL ─── */
-    section {
-      margin-bottom: 80px;
-    }
+    section { margin-bottom: 80px; }
 
     .section-title {
       color: var(--text-main);
@@ -458,53 +438,16 @@
       border: 1px solid var(--border-color);
       padding: 32px;
       border-radius: var(--radius-lg);
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
     }
 
-    .skill-item {
-      display: flex;
-      flex-direction: column;
-    }
+    .skill-item { display: flex; flex-direction: column; }
+    .skill-name { display: flex; justify-content: space-between; font-weight: 600; margin-bottom: 8px; font-size: 0.9em; }
+    .skill-bar-bg { background: #f1f3f4; border-radius: 100px; height: 8px; overflow: hidden; }
+    .skill-bar-fill { height: 100%; background: var(--google-blue); border-radius: 100px; }
 
-    .skill-name {
-      display: flex;
-      justify-content: space-between;
-      font-weight: 600;
-      margin-bottom: 8px;
-      font-size: 0.9em;
-      color: var(--text-main);
-    }
-
-    .skill-bar-bg {
-      background: #f1f3f4;
-      border-radius: 100px;
-      height: 8px;
-      overflow: hidden;
-    }
-
-    .skill-bar-fill {
-      height: 100%;
-      background: var(--google-blue);
-      border-radius: 100px;
-      transition: width 1s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    /* EXPERIENCE TIMELINE */
-    .timeline {
-      position: relative;
-      padding-left: 28px;
-    }
-
-    .timeline::before {
-      content: '';
-      position: absolute;
-      left: 8px;
-      top: 8px;
-      bottom: 8px;
-      width: 2px;
-      background: var(--border-color);
-    }
-
+    /* TIMELINE */
+    .timeline { position: relative; padding-left: 28px; }
+    .timeline::before { content: ''; position: absolute; left: 8px; top: 8px; bottom: 8px; width: 2px; background: var(--border-color); }
     .timeline-item {
       position: relative;
       background: #ffffff;
@@ -512,14 +455,6 @@
       border-radius: var(--radius-md);
       padding: 22px 24px;
       margin-bottom: 20px;
-      transition: var(--transition);
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
-    }
-
-    .timeline-item:hover {
-      border-color: var(--google-blue);
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
-      transform: translateY(-2px);
     }
 
     .timeline-item::before {
@@ -532,7 +467,6 @@
       border-radius: 50%;
       background: var(--google-blue);
       border: 3px solid var(--bg-body);
-      box-shadow: 0 0 0 2px var(--google-blue);
     }
 
     .timeline-type {
@@ -543,146 +477,43 @@
       border-radius: 100px;
       margin-bottom: 10px;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
     }
 
-    .timeline-type.kerja {
-      background: var(--google-blue-light);
-      color: var(--google-blue);
-      border: 1px solid rgba(26, 115, 232, 0.2);
-    }
-
-    .timeline-type.organisasi {
-      background: var(--google-green-light);
-      color: var(--google-green);
-      border: 1px solid rgba(52, 168, 83, 0.2);
-    }
-
-    .timeline-position {
-      font-size: 1.15em;
-      font-weight: 700;
-      color: var(--text-main);
-      margin-bottom: 2px;
-    }
-
-    .timeline-org {
-      font-size: 0.9em;
-      color: var(--text-muted);
-      margin-bottom: 6px;
-      font-weight: 600;
-    }
-
-    .timeline-period {
-      font-size: 0.8em;
-      color: var(--text-sub);
-      margin-bottom: 12px;
-    }
-
-    .timeline-desc {
-      font-size: 0.92em;
-      color: var(--text-muted);
-      line-height: 1.6;
-    }
+    .timeline-type.kerja { background: var(--google-blue-light); color: var(--google-blue); }
+    .timeline-type.organisasi { background: var(--google-green-light); color: var(--google-green); }
+    .timeline-position { font-size: 1.15em; font-weight: 700; margin-bottom: 2px; }
+    .timeline-org { font-size: 0.9em; color: var(--text-muted); margin-bottom: 6px; font-weight: 600; }
+    .timeline-period { font-size: 0.8em; color: var(--text-sub); margin-bottom: 12px; }
+    .timeline-desc { font-size: 0.92em; color: var(--text-muted); }
 
     /* CERTIFICATES */
-    .cert-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 20px;
-    }
-
+    .cert-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
     .cert-card {
       background: #ffffff;
       border: 1px solid var(--border-color);
       border-radius: var(--radius-md);
       overflow: hidden;
       cursor: pointer;
-      transition: var(--transition);
-      display: flex;
-      flex-direction: column;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
-    }
-
-    .cert-card:hover {
-      transform: translateY(-5px);
-      border-color: var(--google-blue);
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
-    }
-
-    .cert-card img {
-      width: 100%;
-      height: 170px;
-      object-fit: cover;
-      display: block;
-      border-bottom: 1px solid var(--border-color);
-    }
-
-    .cert-body {
-      padding: 18px;
-      flex: 1;
       display: flex;
       flex-direction: column;
     }
 
-    .cert-title {
-      font-weight: 700;
-      font-size: 1em;
-      color: var(--text-main);
-      margin-bottom: 6px;
-      line-height: 1.4;
-    }
-
-    .cert-issuer {
-      font-size: 0.88em;
-      color: var(--text-muted);
-      margin-bottom: 4px;
-    }
-
-    .cert-date {
-      font-size: 0.78em;
-      color: var(--text-sub);
-      margin-bottom: 10px;
-    }
-
-    .cert-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      margin-top: auto;
-      color: var(--google-blue);
-      text-decoration: none;
-      font-size: 0.85em;
-      font-weight: 700;
-      transition: var(--transition);
-    }
-
-    .cert-link:hover {
-      color: var(--google-blue-hover);
-      gap: 8px;
-    }
+    .cert-card img { width: 100%; height: 170px; object-fit: cover; border-bottom: 1px solid var(--border-color); }
+    .cert-body { padding: 18px; flex: 1; display: flex; flex-direction: column; }
+    .cert-title { font-weight: 700; font-size: 1em; margin-bottom: 6px; }
+    .cert-issuer { font-size: 0.88em; color: var(--text-muted); margin-bottom: 4px; }
+    .cert-date { font-size: 0.78em; color: var(--text-sub); margin-bottom: 10px; }
+    .cert-link { color: var(--google-blue); text-decoration: none; font-size: 0.85em; font-weight: 700; margin-top: auto; }
 
     /* CARDS (NEWS & PORTFOLIO) */
-    .news-grid, .portfolio-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
-      gap: 24px;
-    }
-
+    .news-grid, .portfolio-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(310px, 1fr)); gap: 24px; }
     .news-card, .work-card {
       background: #ffffff;
       border: 1px solid var(--border-color);
       border-radius: var(--radius-md);
       overflow: hidden;
-      transition: var(--transition);
       display: flex;
       flex-direction: column;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
-    }
-
-    .news-card:hover, .work-card:hover {
-      transform: translateY(-6px);
-      border-color: var(--google-blue);
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
     }
 
     .news-image, .work-image {
@@ -698,42 +529,10 @@
       border-bottom: 1px solid var(--border-color);
     }
 
-    .news-image img, .work-image img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: var(--transition);
-    }
-
-    .news-card:hover .news-image img,
-    .work-card:hover .work-image img {
-      transform: scale(1.05);
-    }
-
-    .news-content, .work-content {
-      padding: 22px;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .news-date {
-      font-size: 0.78em;
-      color: var(--google-blue);
-      margin-bottom: 10px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-
-    .news-title, .work-title {
-      font-size: 1.18em;
-      font-weight: 700;
-      color: var(--text-main);
-      margin-bottom: 10px;
-      line-height: 1.4;
-    }
-
+    .news-image img, .work-image img { width: 100%; height: 100%; object-fit: cover; }
+    .news-content, .work-content { padding: 22px; flex: 1; display: flex; flex-direction: column; }
+    .news-date { font-size: 0.78em; color: var(--google-blue); margin-bottom: 10px; font-weight: 700; text-transform: uppercase; }
+    .news-title, .work-title { font-size: 1.18em; font-weight: 700; margin-bottom: 10px; }
     .work-category {
       display: inline-block;
       background: var(--google-blue-light);
@@ -745,50 +544,12 @@
       margin-bottom: 12px;
       width: fit-content;
       text-transform: uppercase;
-      border: 1px solid rgba(26, 115, 232, 0.15);
     }
 
-    .news-summary, .work-description {
-      color: var(--text-muted);
-      font-size: 0.9em;
-      line-height: 1.6;
-      flex: 1;
-      margin-bottom: 16px;
-    }
-
-    .work-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-bottom: 16px;
-    }
-
-    .tag {
-      background: #f1f3f4;
-      border: 1px solid var(--border-color);
-      color: var(--text-muted);
-      padding: 4px 10px;
-      border-radius: 6px;
-      font-size: 0.75em;
-      font-weight: 600;
-    }
-
-    .news-link, .work-link {
-      color: var(--google-blue);
-      text-decoration: none;
-      font-weight: 700;
-      font-size: 0.88em;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      margin-top: auto;
-      transition: var(--transition);
-    }
-
-    .news-link:hover, .work-link:hover {
-      color: var(--google-blue-hover);
-      gap: 10px;
-    }
+    .news-summary, .work-description { color: var(--text-muted); font-size: 0.9em; flex: 1; margin-bottom: 16px; }
+    .work-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
+    .tag { background: #f1f3f4; border: 1px solid var(--border-color); color: var(--text-muted); padding: 4px 10px; border-radius: 6px; font-size: 0.75em; font-weight: 600; }
+    .news-link, .work-link { color: var(--google-blue); text-decoration: none; font-weight: 700; font-size: 0.88em; margin-top: auto; }
 
     /* LIGHTBOX & MODAL */
     .lightbox {
@@ -802,40 +563,11 @@
       justify-content: center;
       padding: 24px;
       opacity: 0;
-      transition: opacity 0.3s ease;
     }
 
-    .lightbox.active {
-      display: flex;
-      opacity: 1;
-    }
-
-    .lightbox img {
-      max-width: 90%;
-      max-height: 85vh;
-      border-radius: var(--radius-md);
-      border: 1px solid var(--border-color);
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
-    }
-
-    .lightbox-close {
-      position: absolute;
-      top: 24px;
-      right: 32px;
-      color: #ffffff;
-      font-size: 2.2em;
-      cursor: pointer;
-      background: none;
-      border: none;
-      line-height: 1;
-      opacity: 0.85;
-      transition: var(--transition);
-    }
-
-    .lightbox-close:hover {
-      color: var(--google-red);
-      transform: scale(1.1);
-    }
+    .lightbox.active { display: flex; opacity: 1; }
+    .lightbox img { max-width: 90%; max-height: 85vh; border-radius: var(--radius-md); border: 1px solid var(--border-color); }
+    .lightbox-close { position: absolute; top: 24px; right: 32px; color: #ffffff; font-size: 2.2em; cursor: pointer; background: none; border: none; }
 
     .news-modal-content {
       background: #ffffff;
@@ -846,94 +578,67 @@
       max-height: 85vh;
       overflow-y: auto;
       padding: 32px;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
-      animation: zoomIn 0.3s ease;
       position: relative;
     }
 
-    .news-modal-content::before {
-      content: '';
+    .empty-state { text-align: center; padding: 40px 20px; color: var(--text-sub); background: #ffffff; border: 1px dashed var(--border-color); border-radius: var(--radius-md); }
+    .loading { text-align: center; padding: 40px 20px; }
+    .spinner { border: 3px solid #f1f3f4; border-top: 3px solid var(--google-blue); border-radius: 50%; width: 32px; height: 32px; animation: spin 0.8s linear infinite; margin: 0 auto; }
+
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+    footer { text-align: center; color: var(--text-sub); padding: 40px 20px 20px; font-size: 0.85em; border-top: 1px solid var(--border-color); margin-top: 60px; }
+
+    /* ─── HIDDEN RESUME TEMPLATE FOR PNG DOWNLOAD ─── */
+    #resumeCanvasTemplate {
       position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 4px;
-      background: linear-gradient(to right, var(--google-blue) 25%, var(--google-red) 25% 50%, var(--google-yellow) 50% 75%, var(--google-green) 75%);
-    }
-
-    #newsModalTitle {
-      font-size: 1.4em;
-      color: var(--text-main);
-      margin-bottom: 8px;
-      font-weight: 800;
-    }
-
-    #newsModalDate {
-      color: var(--google-blue);
-      font-size: 0.85em;
-      margin-bottom: 20px;
-      font-weight: 700;
-    }
-
-    #newsModalBody {
-      line-height: 1.7;
-      color: var(--text-muted);
-      white-space: pre-wrap;
-      font-size: 0.95em;
-    }
-
-    /* STATES */
-    .empty-state {
-      text-align: center;
-      padding: 40px 20px;
-      color: var(--text-sub);
+      top: 0;
+      left: -9999px; /* Tersembunyi di luar layar */
+      width: 800px;
       background: #ffffff;
-      border: 1px dashed var(--border-color);
-      border-radius: var(--radius-md);
-      font-size: 0.95em;
+      color: #202124;
+      padding: 40px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      box-sizing: border-box;
     }
 
-    .loading {
-      text-align: center;
-      padding: 40px 20px;
+    .res-header {
+      border-bottom: 3px solid var(--google-blue);
+      padding-bottom: 20px;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
     }
 
-    .spinner {
-      border: 3px solid #f1f3f4;
-      border-top: 3px solid var(--google-blue);
+    .res-avatar {
+      width: 100px;
+      height: 100px;
       border-radius: 50%;
-      width: 32px;
-      height: 32px;
-      animation: spin 0.8s linear infinite;
-      margin: 0 auto;
+      object-fit: cover;
+      border: 2px solid var(--google-blue);
     }
 
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
+    .res-name { font-size: 2em; font-weight: 800; color: #202124; }
+    .res-title { font-size: 1.1em; color: var(--google-blue); font-weight: 700; margin-bottom: 6px; }
+    .res-contact { font-size: 0.85em; color: #5f6368; display: flex; gap: 15px; flex-wrap: wrap; }
 
-    @keyframes zoomIn {
-      from { transform: scale(0.95); opacity: 0; }
-      to { transform: scale(1); opacity: 1; }
-    }
+    .res-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 30px; }
+    .res-sec-title { font-size: 1.1em; font-weight: 800; color: #202124; border-bottom: 2px solid #f1f3f4; padding-bottom: 6px; margin-bottom: 14px; text-transform: uppercase; letter-spacing: 0.05em; }
+    
+    .res-skill-tag { display: inline-block; background: #e8f0fe; color: #1a73e8; font-size: 0.8em; font-weight: 700; padding: 4px 10px; border-radius: 100px; margin: 0 4px 6px 0; }
+    .res-exp-item { margin-bottom: 16px; }
+    .res-exp-role { font-weight: 700; font-size: 0.95em; color: #202124; }
+    .res-exp-org { font-size: 0.85em; color: #1a73e8; font-weight: 600; }
+    .res-exp-date { font-size: 0.75em; color: #80868b; margin-bottom: 4px; }
+    .res-exp-desc { font-size: 0.82em; color: #5f6368; line-height: 1.5; }
 
-    footer {
-      text-align: center;
-      color: var(--text-sub);
-      padding: 40px 20px 20px;
-      font-size: 0.85em;
-      border-top: 1px solid var(--border-color);
-      margin-top: 60px;
-    }
-
-    /* ─── RESPONSIVE RULES ─── */
     @media (max-width: 768px) {
       .desktop-header { display: none; }
       .mobile-header { display: flex; }
-      
       h1 { font-size: 2.1em; }
       .container { padding: 20px 16px 40px; }
       .news-grid, .portfolio-grid, .cert-grid { grid-template-columns: 1fr; }
-      .skills-grid { padding: 20px; }
     }
   </style>
 </head>
@@ -966,15 +671,17 @@
         <a href="#certificates"><i class="fa-solid fa-award"></i> Sertifikat</a>
         <a href="#news"><i class="fa-solid fa-newspaper"></i> Berita Acara</a>
         <a href="#portfolio"><i class="fa-solid fa-folder-open"></i> Portfolio</a>
+        <!-- FITUR BARU: DOWNLOAD PNG RESUME (MOBILE) -->
+        <a href="javascript:void(0)" onclick="generateResumePNG()" class="download-png-mobile">
+          <i class="fa-solid fa-file-image"></i> Download PNG Resume
+        </a>
         <a href="admin.html"><i class="fa-solid fa-user-gear"></i> Admin →</a>
       </nav>
     </div>
 
-    <!-- CTA Box Bawah Sidebar -->
     <div class="sidebar-cta-card">
       <h4>Tertarik bekerja sama?</h4>
       <p>Saya terbuka untuk peluang dan kolaborasi menarik!</p>
-      <a href="#profile">Hubungi Saya</a>
     </div>
   </aside>
 
@@ -992,6 +699,10 @@
           <a href="#certificates">Sertifikat</a>
           <a href="#news">Berita</a>
           <a href="#portfolio">Portfolio</a>
+          <!-- FITUR BARU: DOWNLOAD PNG RESUME (DESKTOP) -->
+          <a href="javascript:void(0)" onclick="generateResumePNG()" class="download-btn">
+            <i class="fa-solid fa-file-image"></i> Download PNG
+          </a>
           <a href="admin.html" class="admin-link">Admin →</a>
         </nav>
       </div>
@@ -1057,9 +768,39 @@
     </div>
   </div>
 
-  <!-- SCRIPT INTEGRASI & INTERAKSI -->
+  <!-- HIDDEN CONTAINER UNTUK TEMPLATE RESUME PNG -->
+  <div id="resumeCanvasTemplate">
+    <div class="res-header">
+      <div id="resPhotoWrap"></div>
+      <div>
+        <div class="res-name" id="resName">Enzo Fahrezi</div>
+        <div class="res-title" id="resTitle">Web Developer & Creative</div>
+        <div class="res-contact" id="resContact"></div>
+      </div>
+    </div>
+    <div class="res-grid">
+      <div>
+        <div class="res-sec-title">Skill & Keahlian</div>
+        <div id="resSkills"></div>
+
+        <div class="res-sec-title" style="margin-top:20px;">Sertifikat</div>
+        <div id="resCerts" style="font-size:0.8em; color:#5f6368;"></div>
+      </div>
+      <div>
+        <div class="res-sec-title">Ringkasan Bio</div>
+        <p id="resBio" style="font-size:0.85em; color:#5f6368; line-height:1.6; margin-bottom:20px;"></p>
+
+        <div class="res-sec-title">Pengalaman</div>
+        <div id="resExperience"></div>
+      </div>
+    </div>
+  </div>
+
   <script>
     const API_BASE = '/api';
+    let globalProfileData = {};
+    let globalExpData = [];
+    let globalCertData = [];
 
     // ─── LOGIKA SIDEBAR DRAWER ─────────────────────────────────────────
     const openSidebarBtn = document.getElementById('openSidebar');
@@ -1086,8 +827,10 @@
 
     sidebarLinks.forEach(link => {
       link.addEventListener('click', () => {
-        sidebarLinks.forEach(l => l.classList.remove('active'));
-        link.classList.add('active');
+        if (!link.classList.contains('download-png-mobile')) {
+          sidebarLinks.forEach(l => l.classList.remove('active'));
+          link.classList.add('active');
+        }
         closeMenu();
       });
     });
@@ -1103,6 +846,7 @@
       try {
         const res = await fetch(`${API_BASE}/profile`);
         const p = await res.json();
+        globalProfileData = p;
 
         document.getElementById('profileName').textContent = p.name || 'Nama Belum Diatur';
         document.getElementById('profileTitle').textContent = p.title || '';
@@ -1141,8 +885,6 @@
         }
       } catch (err) {
         console.error('Error loading profile:', err);
-        document.getElementById('profileName').textContent = 'Enzo Fahrezi';
-        document.getElementById('skillsContent').innerHTML = '<p class="empty-state">Gagal memuat skill.</p>';
       }
     }
 
@@ -1152,6 +894,7 @@
       try {
         const res = await fetch(`${API_BASE}/experience`);
         const data = await res.json();
+        globalExpData = data.items || [];
 
         if (!data.items || data.items.length === 0) {
           content.innerHTML = '<p class="empty-state">Belum ada pengalaman ditambahkan.</p>';
@@ -1176,7 +919,6 @@
         }).join('')}</div>`;
       } catch (err) {
         console.error('Error loading experience:', err);
-        content.innerHTML = '<p class="empty-state">Gagal memuat pengalaman.</p>';
       }
     }
 
@@ -1186,6 +928,7 @@
       try {
         const res = await fetch(`${API_BASE}/certificates`);
         const data = await res.json();
+        globalCertData = data.certificates || [];
 
         if (!data.certificates || data.certificates.length === 0) {
           content.innerHTML = '<p class="empty-state">Belum ada sertifikat.</p>';
@@ -1199,13 +942,11 @@
               <div class="cert-title">${escapeHtml(cert.title || '')}</div>
               <div class="cert-issuer">${escapeHtml(cert.issuer || '')}</div>
               <div class="cert-date">${escapeHtml(cert.date || '')}</div>
-              ${cert.url ? `<a href="${cert.url}" target="_blank" class="cert-link" onclick="event.stopPropagation()">Verifikasi <i class="fa-solid fa-arrow-right-long"></i></a>` : ''}
             </div>
           </div>
         `).join('')}</div>`;
       } catch (err) {
         console.error('Error loading certificates:', err);
-        content.innerHTML = '<p class="empty-state">Gagal memuat sertifikat.</p>';
       }
     }
 
@@ -1219,11 +960,7 @@
       document.getElementById('lightbox').classList.remove('active');
     }
 
-    document.getElementById('lightbox').addEventListener('click', (e) => {
-      if (e.target.id === 'lightbox') closeLightbox();
-    });
-
-    // ─── NEWS (PERBAIKAN PEMBACAAN TANGGAL RILIS CUSTOM) ────────────────
+    // ─── NEWS ───────────────────────────────────────────────────────────
     async function loadNews() {
       const content = document.getElementById('newsContent');
       try {
@@ -1236,7 +973,6 @@
         }
 
         content.innerHTML = `<div class="news-grid">${data.items.map(item => {
-          // Membaca releaseDate (custom) terlebih dahulu, jika tidak ada baru gunakan createdAt
           const rawDate = item.releaseDate || item.createdAt;
           let date = '';
           if (rawDate) {
@@ -1244,20 +980,14 @@
             const [year, month, day] = cleanDateStr.split('-');
             if (year && month && day) {
               date = new Date(year, month - 1, day).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
-            } else {
-              date = new Date(rawDate).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
             }
           }
 
-          const imageHtml = item.image
-            ? `<img src="${item.image}" alt="${escapeHtml(item.title)}">`
-            : `<i class="fa-regular fa-newspaper"></i>`;
-          let linkHtml = '';
-          if (item.sourceUrl) {
-            linkHtml = `<a href="${item.sourceUrl}" target="_blank" class="news-link">Baca selengkapnya <i class="fa-solid fa-arrow-right-long"></i></a>`;
-          } else if (item.content) {
-            linkHtml = `<a href="javascript:void(0)" class="news-link" onclick='openNewsModal(${JSON.stringify(item.title)}, ${JSON.stringify(date)}, ${JSON.stringify(item.content)})'>Baca selengkapnya <i class="fa-solid fa-arrow-right-long"></i></a>`;
-          }
+          const imageHtml = item.image ? `<img src="${item.image}" alt="${escapeHtml(item.title)}">` : `<i class="fa-regular fa-newspaper"></i>`;
+          let linkHtml = item.sourceUrl 
+            ? `<a href="${item.sourceUrl}" target="_blank" class="news-link">Baca selengkapnya <i class="fa-solid fa-arrow-right-long"></i></a>`
+            : (item.content ? `<a href="javascript:void(0)" class="news-link" onclick='openNewsModal(${JSON.stringify(item.title)}, ${JSON.stringify(date)}, ${JSON.stringify(item.content)})'>Baca selengkapnya <i class="fa-solid fa-arrow-right-long"></i></a>` : '');
+
           return `
             <div class="news-card">
               <div class="news-image">${imageHtml}</div>
@@ -1272,7 +1002,6 @@
         }).join('')}</div>`;
       } catch (err) {
         console.error('Error loading news:', err);
-        content.innerHTML = '<p class="empty-state">Gagal memuat berita.</p>';
       }
     }
 
@@ -1287,10 +1016,6 @@
       document.getElementById('newsModal').classList.remove('active');
     }
 
-    document.getElementById('newsModal').addEventListener('click', (e) => {
-      if (e.target.id === 'newsModal') closeNewsModal();
-    });
-
     // ─── PORTFOLIO ──────────────────────────────────────────────────────
     async function loadPortfolio() {
       const content = document.getElementById('portfolioContent');
@@ -1304,9 +1029,7 @@
         }
 
         content.innerHTML = `<div class="portfolio-grid">${data.works.map(work => {
-          const imageHtml = work.image
-            ? `<img src="${work.image}" alt="${escapeHtml(work.title)}">`
-            : `<i class="fa-solid fa-folder-open"></i>`;
+          const imageHtml = work.image ? `<img src="${work.image}" alt="${escapeHtml(work.title)}">` : `<i class="fa-solid fa-folder-open"></i>`;
           const tagsHtml = (work.tags || []).map(tag => `<span class="tag">${escapeHtml(tag)}</span>`).join('');
           const linkHtml = work.link ? `<a href="${work.link}" target="_blank" class="work-link">Lihat Proyek <i class="fa-solid fa-arrow-right-long"></i></a>` : '';
           return `
@@ -1324,7 +1047,87 @@
         }).join('')}</div>`;
       } catch (err) {
         console.error('Error loading portfolio:', err);
-        content.innerHTML = '<p class="empty-state">Terjadi kesalahan saat memuat portfolio.</p>';
+      }
+    }
+
+    // ─── FITUR GENERATE RESUME PNG ──────────────────────────────────────
+    async function generateResumePNG() {
+      const btnDesktop = document.querySelector('.download-btn');
+      const originalText = btnDesktop ? btnDesktop.innerHTML : '';
+      if (btnDesktop) btnDesktop.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Memproses...`;
+
+      // 1. Isikan data ke Template Tersembunyi
+      document.getElementById('resName').textContent = globalProfileData.name || 'Enzo Fahrezi';
+      document.getElementById('resTitle').textContent = globalProfileData.title || '';
+      document.getElementById('resBio').textContent = globalProfileData.bio || '';
+      
+      const photoWrap = document.getElementById('resPhotoWrap');
+      if (globalProfileData.photo) {
+        photoWrap.innerHTML = `<img src="${globalProfileData.photo}" class="res-avatar">`;
+      } else {
+        photoWrap.innerHTML = '';
+      }
+
+      const contactArr = [];
+      if (globalProfileData.email) contactArr.push(`✉ ${globalProfileData.email}`);
+      if (globalProfileData.phone) contactArr.push(`📱 ${globalProfileData.phone}`);
+      if (globalProfileData.location) contactArr.push(`📍 ${globalProfileData.location}`);
+      document.getElementById('resContact').innerHTML = contactArr.map(c => `<span>${escapeHtml(c)}</span>`).join('');
+
+      // Skills
+      const skillsContainer = document.getElementById('resSkills');
+      if (globalProfileData.skills && globalProfileData.skills.length > 0) {
+        skillsContainer.innerHTML = globalProfileData.skills.map(s => `
+          <span class="res-skill-tag">${escapeHtml(s.name)} (${s.level}%)</span>
+        `).join('');
+      } else {
+        skillsContainer.innerHTML = '<span style="font-size:0.8em; color:#80868b;">-</span>';
+      }
+
+      // Experience
+      const expContainer = document.getElementById('resExperience');
+      if (globalExpData && globalExpData.length > 0) {
+        expContainer.innerHTML = globalExpData.map(e => `
+          <div class="res-exp-item">
+            <div class="res-exp-role">${escapeHtml(e.position)}</div>
+            <div class="res-exp-org">${escapeHtml(e.organization)}</div>
+            <div class="res-exp-date">${e.startDate || ''} ${e.current ? '- Sekarang' : (e.endDate ? '- ' + e.endDate : '')}</div>
+            <div class="res-exp-desc">${escapeHtml(e.description || '')}</div>
+          </div>
+        `).join('');
+      } else {
+        expContainer.innerHTML = '<div style="font-size:0.8em; color:#80868b;">Belum ada pengalaman</div>';
+      }
+
+      // Certificates
+      const certContainer = document.getElementById('resCerts');
+      if (globalCertData && globalCertData.length > 0) {
+        certContainer.innerHTML = globalCertData.map(c => `
+          <div style="margin-bottom:6px;">• <b>${escapeHtml(c.title)}</b> (${escapeHtml(c.issuer || '')})</div>
+        `).join('');
+      } else {
+        certContainer.innerHTML = '<div>-</div>';
+      }
+
+      // 2. Render Menggunakan html2canvas
+      const element = document.getElementById('resumeCanvasTemplate');
+      
+      try {
+        const canvas = await html2canvas(element, {
+          scale: 2, // Kualitas gambar HD
+          useCORS: true,
+          logging: false
+        });
+
+        // 3. Trigger Download
+        const link = document.createElement('a');
+        link.download = `Resume_${(globalProfileData.name || 'Enzo_Fahrezi').replace(/\s+/g, '_')}.png`;
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+      } catch (err) {
+        alert('Gagal mengunduh resume PNG: ' + err.message);
+      } finally {
+        if (btnDesktop) btnDesktop.innerHTML = originalText;
       }
     }
 
