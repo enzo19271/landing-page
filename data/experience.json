@@ -1,6 +1,17 @@
 {
   "items": [
     {
+      "id": "1786425391619",
+      "type": "organisasi",
+      "position": "Ketua Devisi IT OSIS",
+      "organization": "OSIS SMAN 1 NAMANG",
+      "startDate": "2022",
+      "endDate": "2024",
+      "current": false,
+      "description": "Mengelola media sosial, mendokumentasikan kegiatan acara dan IT support for teacher. ",
+      "createdAt": "2026-08-11T05:16:31.619Z"
+    },
+    {
       "id": "1786424697107",
       "type": "kerja",
       "position": "Fotografer",
