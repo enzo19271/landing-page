@@ -146,13 +146,24 @@ export default async function handler(req, res) {
       return;
     }
 
-    // ─── PUBLIC: GET GALLERY ─────────────────────────────────────────────
-    if (method === 'GET' && parts[1] === 'gallery') {
+    // ─── PUBLIC: GET CERTIFICATES ─────────────────────────────────────────
+    if (method === 'GET' && parts[1] === 'certificates') {
       try {
-        const data = await getGitHubFile('data/gallery.json');
+        const data = await getGitHubFile('data/certificates.json');
         res.status(200).json(JSON.parse(data));
       } catch (err) {
-        res.status(200).json({ photos: [] });
+        res.status(200).json({ certificates: [] });
+      }
+      return;
+    }
+
+    // ─── PUBLIC: GET EXPERIENCE ────────────────────────────────────────────
+    if (method === 'GET' && parts[1] === 'experience') {
+      try {
+        const data = await getGitHubFile('data/experience.json');
+        res.status(200).json(JSON.parse(data));
+      } catch (err) {
+        res.status(200).json({ items: [] });
       }
       return;
     }
@@ -323,49 +334,134 @@ export default async function handler(req, res) {
       return;
     }
 
-    // ─── ADMIN: GET GALLERY ──────────────────────────────────────────────
-    if (method === 'GET' && parts[1] === 'admin' && parts[2] === 'gallery') {
+    // ─── ADMIN: GET CERTIFICATES ──────────────────────────────────────────
+    if (method === 'GET' && parts[1] === 'admin' && parts[2] === 'certificates') {
       const payload = verifyToken(headers.authorization?.split(' ')[1]);
       if (!payload) return res.status(401).json({ message: 'Unauthorized' });
       try {
-        const data = await getGitHubFile('data/gallery.json');
+        const data = await getGitHubFile('data/certificates.json');
         res.status(200).json(JSON.parse(data));
       } catch {
-        res.status(200).json({ photos: [] });
+        res.status(200).json({ certificates: [] });
       }
       return;
     }
 
-    // ─── ADMIN: ADD GALLERY PHOTO ────────────────────────────────────────
-    if (method === 'POST' && parts[1] === 'admin' && parts[2] === 'gallery') {
+    // ─── ADMIN: ADD CERTIFICATE ───────────────────────────────────────────
+    if (method === 'POST' && parts[1] === 'admin' && parts[2] === 'certificates') {
       const payload = verifyToken(headers.authorization?.split(' ')[1]);
       if (!payload) return res.status(401).json({ message: 'Unauthorized' });
       try {
-        let gallery = { photos: [] };
+        let store = { certificates: [] };
         try {
-          const data = await getGitHubFile('data/gallery.json');
-          gallery = JSON.parse(data);
+          const data = await getGitHubFile('data/certificates.json');
+          store = JSON.parse(data);
         } catch {}
-        const newPhoto = { id: Date.now().toString(), ...body, createdAt: new Date().toISOString() };
-        gallery.photos.unshift(newPhoto);
-        await updateGitHubFile('data/gallery.json', JSON.stringify(gallery, null, 2), 'Add gallery photo');
-        res.status(201).json(newPhoto);
+        const newCert = { id: Date.now().toString(), ...body, createdAt: new Date().toISOString() };
+        store.certificates.unshift(newCert);
+        await updateGitHubFile('data/certificates.json', JSON.stringify(store, null, 2), 'Add certificate');
+        res.status(201).json(newCert);
       } catch (err) {
         res.status(500).json({ message: err.message });
       }
       return;
     }
 
-    // ─── ADMIN: DELETE GALLERY PHOTO ─────────────────────────────────────
-    if (method === 'DELETE' && parts[1] === 'admin' && parts[2] === 'gallery' && parts[3]) {
+    // ─── ADMIN: UPDATE CERTIFICATE ────────────────────────────────────────
+    if (method === 'PUT' && parts[1] === 'admin' && parts[2] === 'certificates' && parts[3]) {
       const payload = verifyToken(headers.authorization?.split(' ')[1]);
       if (!payload) return res.status(401).json({ message: 'Unauthorized' });
       try {
-        const data = await getGitHubFile('data/gallery.json');
-        const gallery = JSON.parse(data);
-        gallery.photos = gallery.photos.filter(p => p.id !== parts[3]);
-        await updateGitHubFile('data/gallery.json', JSON.stringify(gallery, null, 2), 'Delete gallery photo');
-        res.status(200).json({ message: 'Photo deleted' });
+        const data = await getGitHubFile('data/certificates.json');
+        const store = JSON.parse(data);
+        const idx = store.certificates.findIndex(c => c.id === parts[3]);
+        if (idx === -1) return res.status(404).json({ message: 'Certificate not found' });
+        store.certificates[idx] = { ...store.certificates[idx], ...body };
+        await updateGitHubFile('data/certificates.json', JSON.stringify(store, null, 2), 'Update certificate');
+        res.status(200).json(store.certificates[idx]);
+      } catch (err) {
+        res.status(500).json({ message: err.message });
+      }
+      return;
+    }
+
+    // ─── ADMIN: DELETE CERTIFICATE ────────────────────────────────────────
+    if (method === 'DELETE' && parts[1] === 'admin' && parts[2] === 'certificates' && parts[3]) {
+      const payload = verifyToken(headers.authorization?.split(' ')[1]);
+      if (!payload) return res.status(401).json({ message: 'Unauthorized' });
+      try {
+        const data = await getGitHubFile('data/certificates.json');
+        const store = JSON.parse(data);
+        store.certificates = store.certificates.filter(c => c.id !== parts[3]);
+        await updateGitHubFile('data/certificates.json', JSON.stringify(store, null, 2), 'Delete certificate');
+        res.status(200).json({ message: 'Certificate deleted' });
+      } catch (err) {
+        res.status(500).json({ message: err.message });
+      }
+      return;
+    }
+
+    // ─── ADMIN: GET EXPERIENCE (ALL) ──────────────────────────────────────
+    if (method === 'GET' && parts[1] === 'admin' && parts[2] === 'experience') {
+      const payload = verifyToken(headers.authorization?.split(' ')[1]);
+      if (!payload) return res.status(401).json({ message: 'Unauthorized' });
+      try {
+        const data = await getGitHubFile('data/experience.json');
+        res.status(200).json(JSON.parse(data));
+      } catch {
+        res.status(200).json({ items: [] });
+      }
+      return;
+    }
+
+    // ─── ADMIN: ADD EXPERIENCE ─────────────────────────────────────────────
+    if (method === 'POST' && parts[1] === 'admin' && parts[2] === 'experience') {
+      const payload = verifyToken(headers.authorization?.split(' ')[1]);
+      if (!payload) return res.status(401).json({ message: 'Unauthorized' });
+      try {
+        let store = { items: [] };
+        try {
+          const data = await getGitHubFile('data/experience.json');
+          store = JSON.parse(data);
+        } catch {}
+        const newItem = { id: Date.now().toString(), ...body, createdAt: new Date().toISOString() };
+        store.items.unshift(newItem);
+        await updateGitHubFile('data/experience.json', JSON.stringify(store, null, 2), 'Add experience item');
+        res.status(201).json(newItem);
+      } catch (err) {
+        res.status(500).json({ message: err.message });
+      }
+      return;
+    }
+
+    // ─── ADMIN: UPDATE EXPERIENCE ──────────────────────────────────────────
+    if (method === 'PUT' && parts[1] === 'admin' && parts[2] === 'experience' && parts[3]) {
+      const payload = verifyToken(headers.authorization?.split(' ')[1]);
+      if (!payload) return res.status(401).json({ message: 'Unauthorized' });
+      try {
+        const data = await getGitHubFile('data/experience.json');
+        const store = JSON.parse(data);
+        const idx = store.items.findIndex(e => e.id === parts[3]);
+        if (idx === -1) return res.status(404).json({ message: 'Experience not found' });
+        store.items[idx] = { ...store.items[idx], ...body };
+        await updateGitHubFile('data/experience.json', JSON.stringify(store, null, 2), 'Update experience item');
+        res.status(200).json(store.items[idx]);
+      } catch (err) {
+        res.status(500).json({ message: err.message });
+      }
+      return;
+    }
+
+    // ─── ADMIN: DELETE EXPERIENCE ───────────────────────────────────────────
+    if (method === 'DELETE' && parts[1] === 'admin' && parts[2] === 'experience' && parts[3]) {
+      const payload = verifyToken(headers.authorization?.split(' ')[1]);
+      if (!payload) return res.status(401).json({ message: 'Unauthorized' });
+      try {
+        const data = await getGitHubFile('data/experience.json');
+        const store = JSON.parse(data);
+        store.items = store.items.filter(e => e.id !== parts[3]);
+        await updateGitHubFile('data/experience.json', JSON.stringify(store, null, 2), 'Delete experience item');
+        res.status(200).json({ message: 'Experience deleted' });
       } catch (err) {
         res.status(500).json({ message: err.message });
       }
