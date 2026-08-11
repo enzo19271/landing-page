@@ -135,6 +135,39 @@ export default async function handler(req, res) {
       return;
     }
 
+    // ─── PUBLIC: GET PROFILE ─────────────────────────────────────────────
+    if (method === 'GET' && parts[1] === 'profile') {
+      try {
+        const data = await getGitHubFile('data/profile.json');
+        res.status(200).json(JSON.parse(data));
+      } catch (err) {
+        res.status(404).json({ message: 'Profile not found' });
+      }
+      return;
+    }
+
+    // ─── PUBLIC: GET GALLERY ─────────────────────────────────────────────
+    if (method === 'GET' && parts[1] === 'gallery') {
+      try {
+        const data = await getGitHubFile('data/gallery.json');
+        res.status(200).json(JSON.parse(data));
+      } catch (err) {
+        res.status(200).json({ photos: [] });
+      }
+      return;
+    }
+
+    // ─── PUBLIC: GET NEWS ────────────────────────────────────────────────
+    if (method === 'GET' && parts[1] === 'news') {
+      try {
+        const data = await getGitHubFile('data/news.json');
+        res.status(200).json(JSON.parse(data));
+      } catch (err) {
+        res.status(200).json({ items: [] });
+      }
+      return;
+    }
+
     // ─── ADMIN: LOGIN ────────────────────────────────────────────────────
     if (method === 'POST' && parts[1] === 'admin' && parts[2] === 'login') {
       const { password } = body;
@@ -257,6 +290,149 @@ export default async function handler(req, res) {
         portfolio.works = portfolio.works.filter(w => w.id !== workId);
         await updateGitHubFile('data/portfolio.json', JSON.stringify(portfolio, null, 2), 'Delete portfolio work');
         res.status(200).json({ message: 'Work deleted' });
+      } catch (err) {
+        res.status(500).json({ message: err.message });
+      }
+      return;
+    }
+
+    // ─── ADMIN: GET PROFILE ──────────────────────────────────────────────
+    if (method === 'GET' && parts[1] === 'admin' && parts[2] === 'profile') {
+      const payload = verifyToken(headers.authorization?.split(' ')[1]);
+      if (!payload) return res.status(401).json({ message: 'Unauthorized' });
+      try {
+        const data = await getGitHubFile('data/profile.json');
+        res.status(200).json(JSON.parse(data));
+      } catch {
+        res.status(200).json({ name: '', title: '', bio: '', photo: '', skills: [], socialLinks: {} });
+      }
+      return;
+    }
+
+    // ─── ADMIN: UPDATE PROFILE ───────────────────────────────────────────
+    if (method === 'PUT' && parts[1] === 'admin' && parts[2] === 'profile') {
+      const payload = verifyToken(headers.authorization?.split(' ')[1]);
+      if (!payload) return res.status(401).json({ message: 'Unauthorized' });
+      try {
+        const updated = { ...body, updatedAt: new Date().toISOString() };
+        await updateGitHubFile('data/profile.json', JSON.stringify(updated, null, 2), 'Update profile');
+        res.status(200).json(updated);
+      } catch (err) {
+        res.status(500).json({ message: err.message });
+      }
+      return;
+    }
+
+    // ─── ADMIN: GET GALLERY ──────────────────────────────────────────────
+    if (method === 'GET' && parts[1] === 'admin' && parts[2] === 'gallery') {
+      const payload = verifyToken(headers.authorization?.split(' ')[1]);
+      if (!payload) return res.status(401).json({ message: 'Unauthorized' });
+      try {
+        const data = await getGitHubFile('data/gallery.json');
+        res.status(200).json(JSON.parse(data));
+      } catch {
+        res.status(200).json({ photos: [] });
+      }
+      return;
+    }
+
+    // ─── ADMIN: ADD GALLERY PHOTO ────────────────────────────────────────
+    if (method === 'POST' && parts[1] === 'admin' && parts[2] === 'gallery') {
+      const payload = verifyToken(headers.authorization?.split(' ')[1]);
+      if (!payload) return res.status(401).json({ message: 'Unauthorized' });
+      try {
+        let gallery = { photos: [] };
+        try {
+          const data = await getGitHubFile('data/gallery.json');
+          gallery = JSON.parse(data);
+        } catch {}
+        const newPhoto = { id: Date.now().toString(), ...body, createdAt: new Date().toISOString() };
+        gallery.photos.unshift(newPhoto);
+        await updateGitHubFile('data/gallery.json', JSON.stringify(gallery, null, 2), 'Add gallery photo');
+        res.status(201).json(newPhoto);
+      } catch (err) {
+        res.status(500).json({ message: err.message });
+      }
+      return;
+    }
+
+    // ─── ADMIN: DELETE GALLERY PHOTO ─────────────────────────────────────
+    if (method === 'DELETE' && parts[1] === 'admin' && parts[2] === 'gallery' && parts[3]) {
+      const payload = verifyToken(headers.authorization?.split(' ')[1]);
+      if (!payload) return res.status(401).json({ message: 'Unauthorized' });
+      try {
+        const data = await getGitHubFile('data/gallery.json');
+        const gallery = JSON.parse(data);
+        gallery.photos = gallery.photos.filter(p => p.id !== parts[3]);
+        await updateGitHubFile('data/gallery.json', JSON.stringify(gallery, null, 2), 'Delete gallery photo');
+        res.status(200).json({ message: 'Photo deleted' });
+      } catch (err) {
+        res.status(500).json({ message: err.message });
+      }
+      return;
+    }
+
+    // ─── ADMIN: GET NEWS (ALL) ───────────────────────────────────────────
+    if (method === 'GET' && parts[1] === 'admin' && parts[2] === 'news') {
+      const payload = verifyToken(headers.authorization?.split(' ')[1]);
+      if (!payload) return res.status(401).json({ message: 'Unauthorized' });
+      try {
+        const data = await getGitHubFile('data/news.json');
+        res.status(200).json(JSON.parse(data));
+      } catch {
+        res.status(200).json({ items: [] });
+      }
+      return;
+    }
+
+    // ─── ADMIN: ADD NEWS ─────────────────────────────────────────────────
+    if (method === 'POST' && parts[1] === 'admin' && parts[2] === 'news') {
+      const payload = verifyToken(headers.authorization?.split(' ')[1]);
+      if (!payload) return res.status(401).json({ message: 'Unauthorized' });
+      try {
+        let news = { items: [] };
+        try {
+          const data = await getGitHubFile('data/news.json');
+          news = JSON.parse(data);
+        } catch {}
+        const newItem = { id: Date.now().toString(), ...body, createdAt: new Date().toISOString() };
+        news.items.unshift(newItem);
+        await updateGitHubFile('data/news.json', JSON.stringify(news, null, 2), 'Add news item');
+        res.status(201).json(newItem);
+      } catch (err) {
+        res.status(500).json({ message: err.message });
+      }
+      return;
+    }
+
+    // ─── ADMIN: UPDATE NEWS ──────────────────────────────────────────────
+    if (method === 'PUT' && parts[1] === 'admin' && parts[2] === 'news' && parts[3]) {
+      const payload = verifyToken(headers.authorization?.split(' ')[1]);
+      if (!payload) return res.status(401).json({ message: 'Unauthorized' });
+      try {
+        const data = await getGitHubFile('data/news.json');
+        const news = JSON.parse(data);
+        const idx = news.items.findIndex(n => n.id === parts[3]);
+        if (idx === -1) return res.status(404).json({ message: 'News not found' });
+        news.items[idx] = { ...news.items[idx], ...body };
+        await updateGitHubFile('data/news.json', JSON.stringify(news, null, 2), 'Update news item');
+        res.status(200).json(news.items[idx]);
+      } catch (err) {
+        res.status(500).json({ message: err.message });
+      }
+      return;
+    }
+
+    // ─── ADMIN: DELETE NEWS ──────────────────────────────────────────────
+    if (method === 'DELETE' && parts[1] === 'admin' && parts[2] === 'news' && parts[3]) {
+      const payload = verifyToken(headers.authorization?.split(' ')[1]);
+      if (!payload) return res.status(401).json({ message: 'Unauthorized' });
+      try {
+        const data = await getGitHubFile('data/news.json');
+        const news = JSON.parse(data);
+        news.items = news.items.filter(n => n.id !== parts[3]);
+        await updateGitHubFile('data/news.json', JSON.stringify(news, null, 2), 'Delete news item');
+        res.status(200).json({ message: 'News deleted' });
       } catch (err) {
         res.status(500).json({ message: err.message });
       }
