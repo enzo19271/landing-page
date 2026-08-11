@@ -33,7 +33,7 @@ function verifyToken(token) {
 }
 
 function simplePasswordVerify(inputPassword, storedHash) {
-  const adminPassword = 'admin123';
+  const adminPassword = process.env.ADMIN_PASSWORD || 'admin123';
   if (storedHash === 'admin' && inputPassword === adminPassword) return true;
   return false;
 }
