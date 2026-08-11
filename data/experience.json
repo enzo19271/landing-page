@@ -1,6 +1,17 @@
 {
   "items": [
     {
+      "id": "1786418047222",
+      "type": "kerja",
+      "position": "Sekretaris BUMDES",
+      "organization": "BUMDES",
+      "startDate": "2025",
+      "endDate": "2026",
+      "current": false,
+      "description": "- Mengelola Keuangan BUMDES bagian toko\n- Mencatat dan membuat laporan Bulanan dan Tahunan\n- Mencatat dan membuat surat menyurat, berita acara dan sbg nya",
+      "createdAt": "2026-08-11T03:14:07.222Z"
+    },
+    {
       "id": "1786417982842",
       "type": "kerja",
       "position": "Pegawai BUMDES",
