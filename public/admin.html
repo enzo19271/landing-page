@@ -4,290 +4,600 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin - CV & Portfolio</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
 
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: #f5f5f5;
-      color: #333;
+  <!-- Google Fonts & Font Awesome Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <style>
+    :root {
+      --bg-body: #0a0a0c;
+      --bg-card: #121215;
+      --bg-card-hover: #1a1a1e;
+      --border-color: rgba(255, 255, 255, 0.08);
+      --border-color-hover: rgba(255, 255, 255, 0.22);
+      --text-main: #f4f4f5;
+      --text-muted: #a1a1aa;
+      --text-sub: #71717a;
+      --accent-white: #ffffff;
+      --accent-black: #09090b;
+      --danger: #ef4444;
+      --danger-hover: #dc2626;
+      --radius-sm: 8px;
+      --radius-md: 16px;
+      --radius-lg: 24px;
+      --transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg-body);
+      color: var(--text-main);
+      min-height: 100vh;
+      line-height: 1.6;
+      background-image: 
+        radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.04) 0%, transparent 60%),
+        radial-gradient(circle at 100% 50%, rgba(255, 255, 255, 0.02) 0%, transparent 40%);
+    }
+
+    /* ─── LOGIN VIEW ─── */
     .login-container {
       min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      padding: 24px;
     }
 
     .login-box {
-      background: white;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
       padding: 40px;
-      border-radius: 12px;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+      border-radius: var(--radius-lg);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
       width: 100%;
-      max-width: 400px;
+      max-width: 420px;
+      animation: fadeIn 0.6s ease-out;
     }
 
-    .login-box h2 { text-align: center; margin-bottom: 30px; }
+    .login-box h2 {
+      text-align: center;
+      margin-bottom: 28px;
+      font-size: 1.6em;
+      font-weight: 800;
+      color: var(--accent-white);
+      letter-spacing: -0.02em;
+    }
 
-    .form-group { margin-bottom: 20px; }
+    .form-group {
+      margin-bottom: 20px;
+    }
 
-    label { display: block; margin-bottom: 8px; font-weight: 500; color: #555; }
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: var(--text-muted);
+      font-size: 0.88em;
+    }
 
     input[type="password"], input[type="text"], input[type="url"], input[type="number"],
     input[type="email"], input[type="tel"], input[type="file"],
     textarea, select {
       width: 100%;
-      padding: 12px;
-      border: 1px solid #ddd;
-      border-radius: 6px;
+      padding: 12px 16px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      color: var(--text-main);
       font-family: inherit;
-      font-size: 1em;
-      transition: border-color 0.3s;
+      font-size: 0.95em;
+      transition: var(--transition);
+    }
+
+    input::placeholder, textarea::placeholder {
+      color: var(--text-sub);
+    }
+
+    select option {
+      background: var(--bg-card);
+      color: var(--text-main);
     }
 
     input:focus, textarea:focus, select:focus {
       outline: none;
-      border-color: #667eea;
-      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+      border-color: var(--accent-white);
+      background: rgba(255, 255, 255, 0.06);
+      box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.05);
     }
 
-    textarea { resize: vertical; min-height: 100px; }
+    textarea {
+      resize: vertical;
+      min-height: 110px;
+    }
 
     button {
       width: 100%;
-      padding: 12px;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
+      padding: 12px 20px;
+      background: var(--accent-white);
+      color: var(--accent-black);
       border: none;
-      border-radius: 6px;
-      font-size: 1em;
-      font-weight: 600;
+      border-radius: var(--radius-sm);
+      font-size: 0.95em;
+      font-weight: 700;
       cursor: pointer;
-      transition: all 0.3s;
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
     }
 
-    button:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4); }
-    button:active { transform: translateY(0); }
+    button:hover {
+      background: #e4e4e7;
+      transform: translateY(-1px);
+    }
 
-    .alert { padding: 12px; border-radius: 6px; margin-bottom: 20px; font-size: 0.95em; }
-    .alert-error { background: #fee; color: #c33; border: 1px solid #fcc; }
-    .alert-success { background: #efe; color: #3c3; border: 1px solid #cfc; }
+    button:active {
+      transform: translateY(0);
+    }
 
-    .dashboard { display: none; min-height: 100vh; background: #f5f5f5; }
+    .alert {
+      padding: 12px 16px;
+      border-radius: var(--radius-sm);
+      margin-bottom: 20px;
+      font-size: 0.9em;
+      font-weight: 500;
+    }
+
+    .alert-error {
+      background: rgba(239, 68, 68, 0.12);
+      color: #f87171;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+
+    .alert-success {
+      background: rgba(34, 197, 94, 0.12);
+      color: #4ade80;
+      border: 1px solid rgba(34, 197, 94, 0.3);
+    }
+
+    /* ─── DASHBOARD VIEW ─── */
+    .dashboard {
+      display: none;
+      min-height: 100vh;
+    }
 
     .dashboard-header {
-      background: white;
-      padding: 20px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      background: rgba(18, 18, 21, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      padding: 18px 32px;
+      border-bottom: 1px solid var(--border-color);
       display: flex;
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
       gap: 15px;
+      position: sticky;
+      top: 0;
+      z-index: 800;
     }
 
-    .dashboard-header h1 { font-size: 1.5em; }
+    .dashboard-header h1 {
+      font-size: 1.35em;
+      font-weight: 800;
+      color: var(--accent-white);
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
 
-    .logout-btn { background: #dc3545; padding: 8px 20px; font-size: 0.9em; width: auto; }
-    .logout-btn:hover { background: #c82333; }
+    .logout-btn {
+      background: rgba(239, 68, 68, 0.15);
+      color: #f87171;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      padding: 8px 18px;
+      font-size: 0.88em;
+      width: auto;
+      border-radius: 100px;
+    }
+
+    .logout-btn:hover {
+      background: rgba(239, 68, 68, 0.25);
+      color: #fca5a5;
+    }
 
     .tab-nav {
-      background: white;
+      background: var(--bg-card);
+      border-bottom: 1px solid var(--border-color);
       display: flex;
-      gap: 4px;
-      padding: 0 20px;
+      gap: 6px;
+      padding: 10px 32px;
       overflow-x: auto;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      white-space: nowrap;
     }
 
     .tab-btn {
       width: auto;
-      background: none;
-      color: #666;
-      border-radius: 0;
-      padding: 14px 18px;
-      font-weight: 500;
-      font-size: 0.92em;
-      white-space: nowrap;
-      border-bottom: 3px solid transparent;
+      background: transparent;
+      color: var(--text-muted);
+      border-radius: 100px;
+      padding: 10px 20px;
+      font-weight: 600;
+      font-size: 0.88em;
+      border: 1px solid transparent;
       box-shadow: none;
     }
 
-    .tab-btn:hover { transform: none; box-shadow: none; color: #667eea; background: #f9f9ff; }
+    .tab-btn:hover {
+      transform: none;
+      box-shadow: none;
+      color: var(--accent-white);
+      background: rgba(255, 255, 255, 0.05);
+    }
 
-    .tab-btn.active { color: #667eea; border-bottom: 3px solid #667eea; background: #f9f9ff; }
+    .tab-btn.active {
+      color: var(--accent-black);
+      background: var(--accent-white);
+      border-color: var(--accent-white);
+    }
 
-    .dashboard-content { max-width: 1100px; margin: 0 auto; padding: 30px 20px; }
+    .dashboard-content {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 40px 24px;
+    }
 
     .tab-panel { display: none; }
-    .tab-panel.active { display: block; }
+    .tab-panel.active { display: block; animation: fadeIn 0.4s ease-out; }
 
     .section {
-      background: white;
-      padding: 30px;
-      border-radius: 12px;
-      margin-bottom: 30px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      padding: 32px;
+      border-radius: var(--radius-lg);
+      margin-bottom: 32px;
     }
 
     .section h2 {
-      margin-bottom: 20px;
-      border-bottom: 2px solid #667eea;
-      padding-bottom: 10px;
+      margin-bottom: 24px;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 12px;
       font-size: 1.25em;
+      font-weight: 700;
+      color: var(--accent-white);
     }
 
-    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
     .form-row.full { grid-template-columns: 1fr; }
 
-    .tags-input { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
-
-    .tag-item {
-      background: #667eea; color: white; padding: 6px 12px; border-radius: 20px;
-      display: flex; align-items: center; gap: 8px; font-size: 0.9em;
+    .tags-input {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
     }
 
-    .tag-item button { background: none; border: none; color: white; cursor: pointer; font-size: 1.2em; padding: 0; width: auto; }
+    .tag-item {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 6px 14px;
+      border-radius: 100px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85em;
+      font-weight: 500;
+    }
+
+    .tag-item button {
+      background: none;
+      border: none;
+      color: var(--text-sub);
+      cursor: pointer;
+      font-size: 1.1em;
+      padding: 0;
+      width: auto;
+      line-height: 1;
+    }
+
+    .tag-item button:hover {
+      color: var(--accent-white);
+    }
 
     /* PHOTO PREVIEW */
-    .photo-preview-row { display: flex; align-items: center; gap: 20px; margin-bottom: 10px; }
+    .photo-preview-row {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      margin-bottom: 20px;
+      background: rgba(255, 255, 255, 0.02);
+      padding: 16px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-color);
+    }
 
     .photo-preview {
-      width: 100px; height: 100px; border-radius: 50%; object-fit: cover;
-      background: #eee; border: 2px solid #ddd; flex-shrink: 0;
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      object-fit: cover;
+      background: var(--bg-body);
+      border: 2px solid var(--border-color-hover);
+      flex-shrink: 0;
     }
 
     .photo-preview-placeholder {
-      width: 100px; height: 100px; border-radius: 50%; background: #eee;
-      display: flex; align-items: center; justify-content: center; font-size: 2em; flex-shrink: 0;
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      background: var(--bg-body);
+      border: 2px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2em;
+      color: var(--text-sub);
+      flex-shrink: 0;
     }
 
     /* SKILLS EDITOR */
     .skill-row {
       display: grid;
       grid-template-columns: 1fr 100px auto;
-      gap: 10px;
+      gap: 12px;
       align-items: center;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
     }
 
     .skill-row input[type="number"] { width: 100%; }
-    .skill-row button { width: auto; padding: 8px 14px; background: #dc3545; }
-    .skill-row button:hover { background: #c82333; }
+    .skill-row button {
+      width: auto;
+      padding: 12px 18px;
+      background: rgba(239, 68, 68, 0.15);
+      color: #f87171;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+    }
 
-    .add-skill-row { display: grid; grid-template-columns: 1fr 100px auto; gap: 10px; margin-top: 15px; }
-    .add-skill-row button { width: auto; padding: 10px 16px; }
+    .skill-row button:hover {
+      background: rgba(239, 68, 68, 0.25);
+    }
 
-    /* CERTIFICATES */
+    .add-skill-row {
+      display: grid;
+      grid-template-columns: 1fr 110px auto;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .add-skill-row button {
+      width: auto;
+      padding: 12px 20px;
+    }
+
+    /* CERTIFICATES ADMIN */
     .cert-admin-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
       gap: 16px;
       margin-top: 20px;
     }
 
-    .cert-admin-item { position: relative; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
-    .cert-admin-item img { width: 100%; height: 140px; object-fit: cover; display: block; }
-    .cert-admin-caption { padding: 8px; font-size: 0.8em; color: #555; background: #f9f9f9; }
-
-    .cert-admin-delete {
-      position: absolute; top: 6px; right: 6px; width: auto; padding: 4px 9px;
-      background: rgba(220,53,69,0.9); font-size: 0.85em; border-radius: 50%;
+    .cert-admin-item {
+      position: relative;
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+      background: rgba(255, 255, 255, 0.02);
     }
 
-    /* LISTS */
-    .item-list { margin-top: 30px; }
+    .cert-admin-item img {
+      width: 100%;
+      height: 130px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .cert-admin-caption {
+      padding: 10px;
+      font-size: 0.8em;
+      color: var(--text-muted);
+      background: var(--bg-card);
+      font-weight: 500;
+    }
+
+    .cert-admin-delete {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      width: 28px;
+      height: 28px;
+      padding: 0;
+      background: rgba(239, 68, 68, 0.85);
+      color: #fff;
+      font-size: 0.9em;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+    }
+
+    /* ITEM LISTS */
+    .item-list { margin-top: 20px; }
 
     .list-item {
-      background: #f9f9f9;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border-color);
       padding: 20px;
-      border-radius: 8px;
-      margin-bottom: 15px;
-      border-left: 4px solid #667eea;
+      border-radius: var(--radius-md);
+      margin-bottom: 16px;
       display: flex;
       justify-content: space-between;
-      align-items: start;
+      align-items: flex-start;
       gap: 20px;
       flex-wrap: wrap;
+      transition: var(--transition);
+    }
+
+    .list-item:hover {
+      border-color: var(--border-color-hover);
+      background: var(--bg-card-hover);
     }
 
     .list-item-info { flex: 1; min-width: 200px; }
-    .list-item-title { font-size: 1.1em; font-weight: 600; margin-bottom: 5px; }
-    .list-item-meta { font-size: 0.9em; color: #666; margin-bottom: 8px; }
-    .list-item-desc { font-size: 0.95em; color: #555; line-height: 1.4; }
-    .list-item-actions { display: flex; gap: 10px; }
+    .list-item-title { font-size: 1.1em; font-weight: 700; color: var(--accent-white); margin-bottom: 4px; }
+    .list-item-meta { font-size: 0.85em; color: var(--text-sub); margin-bottom: 10px; font-weight: 500; }
+    .list-item-desc { font-size: 0.9em; color: var(--text-muted); line-height: 1.5; }
+    .list-item-actions { display: flex; gap: 8px; }
 
-    .edit-btn, .delete-btn { padding: 8px 16px; font-size: 0.9em; width: auto; }
-    .edit-btn { background: #667eea; }
-    .delete-btn { background: #dc3545; }
-    .delete-btn:hover { background: #c82333; }
+    .edit-btn, .delete-btn {
+      padding: 8px 16px;
+      font-size: 0.85em;
+      width: auto;
+      border-radius: 8px;
+    }
 
+    .edit-btn {
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--accent-white);
+      border: 1px solid var(--border-color);
+    }
+
+    .edit-btn:hover { background: rgba(255, 255, 255, 0.2); }
+
+    .delete-btn {
+      background: rgba(239, 68, 68, 0.15);
+      color: #f87171;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+
+    .delete-btn:hover { background: rgba(239, 68, 68, 0.25); }
+
+    /* MODAL */
     .modal {
-      display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center;
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(8px);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
       padding: 20px;
     }
+
     .modal.active { display: flex; }
 
     .modal-content {
-      background: white; padding: 30px; border-radius: 12px; max-width: 550px; width: 100%;
-      max-height: 90vh; overflow-y: auto; box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+      background: var(--bg-card);
+      border: 1px solid var(--border-color-hover);
+      padding: 32px;
+      border-radius: var(--radius-lg);
+      max-width: 580px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+      animation: zoomIn 0.3s ease;
     }
 
-    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-    .modal-header h3 { font-size: 1.3em; }
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border-color);
+    }
 
-    .close-btn { background: none; border: none; font-size: 1.5em; cursor: pointer; color: #999; width: auto; padding: 0; }
-    .close-btn:hover { color: #333; }
+    .modal-header h3 { font-size: 1.3em; font-weight: 700; color: var(--accent-white); }
 
-    .submit-btn { width: 100%; margin-top: 10px; }
+    .close-btn {
+      background: none;
+      border: none;
+      font-size: 1.5em;
+      cursor: pointer;
+      color: var(--text-sub);
+      width: auto;
+      padding: 0;
+      line-height: 1;
+    }
+
+    .close-btn:hover { color: var(--accent-white); }
+
+    .submit-btn { width: 100%; margin-top: 12px; }
 
     .spinner {
-      border: 3px solid #f3f3f3; border-top: 3px solid #667eea; border-radius: 50%;
-      width: 30px; height: 30px; animation: spin 1s linear infinite; margin: 0 auto;
+      border: 3px solid rgba(255,255,255,0.1);
+      border-top: 3px solid var(--accent-white);
+      border-radius: 50%;
+      width: 28px;
+      height: 28px;
+      animation: spin 0.8s linear infinite;
+      margin: 0 auto;
     }
-    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-    .hint { font-size: 0.82em; color: #888; margin-top: -12px; margin-bottom: 16px; }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes zoomIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+
+    .hint { font-size: 0.8em; color: var(--text-sub); margin-top: 6px; }
 
     @media (max-width: 768px) {
       .form-row, .skill-row, .add-skill-row { grid-template-columns: 1fr; }
       .list-item { flex-direction: column; }
       .list-item-actions { width: 100%; }
       .edit-btn, .delete-btn { flex: 1; }
+      .dashboard-header, .tab-nav { padding-left: 16px; padding-right: 16px; }
+      .dashboard-content { padding: 24px 16px; }
     }
   </style>
 </head>
 <body>
+
   <!-- LOGIN VIEW -->
   <div id="loginView" class="login-container">
     <div class="login-box">
-      <h2>Admin Login</h2>
+      <h2><i class="fa-solid fa-lock" style="margin-right: 8px;"></i> Admin Login</h2>
       <div id="loginError"></div>
       <div class="form-group">
-        <label for="password">Password</label>
-        <input type="password" id="password" placeholder="Masukkan password">
+        <label for="password">Password Akses</label>
+        <input type="password" id="password" placeholder="Masukkan password admin">
       </div>
-      <button onclick="handleLogin()">Login</button>
+      <button onclick="handleLogin()"><i class="fa-solid fa-right-to-bracket"></i> Masuk Dashboard</button>
     </div>
   </div>
 
   <!-- DASHBOARD VIEW -->
   <div id="dashboardView" class="dashboard">
     <div class="dashboard-header">
-      <h1>Admin Dashboard</h1>
-      <button class="logout-btn" onclick="handleLogout()">Logout</button>
+      <h1><i class="fa-solid fa-sliders"></i> Admin Dashboard</h1>
+      <button class="logout-btn" onclick="handleLogout()"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</button>
     </div>
 
     <div class="tab-nav">
-      <button class="tab-btn active" onclick="switchTab('profile')">👤 Profil & Skill</button>
-      <button class="tab-btn" onclick="switchTab('experience')">🧭 Pengalaman</button>
-      <button class="tab-btn" onclick="switchTab('certificates')">🏆 Sertifikat</button>
-      <button class="tab-btn" onclick="switchTab('news')">📰 Berita</button>
-      <button class="tab-btn" onclick="switchTab('portfolio')">💼 Portfolio</button>
+      <button class="tab-btn active" onclick="switchTab('profile')"><i class="fa-regular fa-user"></i> Profil & Skill</button>
+      <button class="tab-btn" onclick="switchTab('experience')"><i class="fa-solid fa-briefcase"></i> Pengalaman</button>
+      <button class="tab-btn" onclick="switchTab('certificates')"><i class="fa-solid fa-award"></i> Sertifikat</button>
+      <button class="tab-btn" onclick="switchTab('news')"><i class="fa-regular fa-newspaper"></i> Berita</button>
+      <button class="tab-btn" onclick="switchTab('portfolio')"><i class="fa-solid fa-folder-open"></i> Portfolio</button>
     </div>
 
     <div class="dashboard-content">
@@ -295,11 +605,11 @@
       <!-- ═══ TAB: PROFILE & SKILLS ═══ -->
       <div id="tab-profile" class="tab-panel active">
         <div class="section">
-          <h2>Profil</h2>
+          <h2>Informasi Profil</h2>
           <div id="profileFormError"></div>
 
           <div class="photo-preview-row">
-            <div id="profilePhotoPreviewWrap"><div class="photo-preview-placeholder">🙂</div></div>
+            <div id="profilePhotoPreviewWrap"><div class="photo-preview-placeholder"><i class="fa-regular fa-user"></i></div></div>
             <div style="flex:1;">
               <label for="profilePhotoInput">Foto Profil</label>
               <input type="file" id="profilePhotoInput" accept="image/*" onchange="handleProfilePhotoChange(event)">
@@ -309,7 +619,7 @@
 
           <div class="form-row">
             <div class="form-group">
-              <label for="pName">Nama</label>
+              <label for="pName">Nama Lengkap</label>
               <input type="text" id="pName" placeholder="Nama lengkap">
             </div>
             <div class="form-group">
@@ -319,23 +629,23 @@
           </div>
 
           <div class="form-group full">
-            <label for="pBio">Bio</label>
+            <label for="pBio">Bio Singkat</label>
             <textarea id="pBio" placeholder="Ceritakan tentang dirimu..."></textarea>
           </div>
 
           <div class="form-row">
             <div class="form-group">
-              <label for="pEmail">Email</label>
+              <label for="pEmail">Email Alamat</label>
               <input type="email" id="pEmail" placeholder="nama@email.com">
             </div>
             <div class="form-group">
-              <label for="pPhone">Telepon</label>
+              <label for="pPhone">Telepon / WhatsApp</label>
               <input type="tel" id="pPhone" placeholder="08xxxxxxxxxx">
             </div>
           </div>
 
           <div class="form-group full">
-            <label for="pLocation">Lokasi</label>
+            <label for="pLocation">Lokasi Domisili</label>
             <input type="text" id="pLocation" placeholder="Kota, Provinsi">
           </div>
 
@@ -361,18 +671,18 @@
             </div>
           </div>
 
-          <button class="submit-btn" onclick="saveProfile()">Simpan Profil</button>
+          <button class="submit-btn" onclick="saveProfile()"><i class="fa-solid fa-floppy-disk"></i> Simpan Profil</button>
         </div>
 
         <div class="section">
-          <h2>Skill</h2>
+          <h2>Keahlian & Skill</h2>
           <div id="skillsList"></div>
           <div class="add-skill-row">
             <input type="text" id="newSkillName" placeholder="Nama skill (mis. Web Development)">
             <input type="number" id="newSkillLevel" placeholder="Level %" min="0" max="100" value="80">
-            <button onclick="addSkill()">+ Tambah</button>
+            <button onclick="addSkill()"><i class="fa-solid fa-plus"></i> Tambah</button>
           </div>
-          <button class="submit-btn" style="margin-top:20px;" onclick="saveProfile()">Simpan Skill</button>
+          <button class="submit-btn" style="margin-top:20px;" onclick="saveProfile()"><i class="fa-solid fa-floppy-disk"></i> Simpan Skill</button>
         </div>
       </div>
 
@@ -384,7 +694,7 @@
 
           <div class="form-row">
             <div class="form-group">
-              <label for="expType">Jenis</label>
+              <label for="expType">Jenis Pengalaman</label>
               <select id="expType">
                 <option value="kerja">Pengalaman Kerja</option>
                 <option value="organisasi">Pengalaman Organisasi</option>
@@ -403,11 +713,11 @@
 
           <div class="form-row">
             <div class="form-group">
-              <label for="expStartDate">Mulai</label>
+              <label for="expStartDate">Periode Mulai</label>
               <input type="text" id="expStartDate" placeholder="mis. Jan 2023">
             </div>
             <div class="form-group">
-              <label for="expEndDate">Selesai</label>
+              <label for="expEndDate">Periode Selesai</label>
               <input type="text" id="expEndDate" placeholder="mis. Des 2024">
             </div>
           </div>
@@ -418,12 +728,12 @@
           </div>
 
           <div class="form-group full">
-            <label for="expDescription">Deskripsi</label>
+            <label for="expDescription">Deskripsi Tugas</label>
             <textarea id="expDescription" placeholder="Jelaskan tanggung jawab/aktivitas..."></textarea>
           </div>
 
           <button class="submit-btn" onclick="handleSaveExperience()">
-            <span id="expSubmitBtnText">Tambah Pengalaman</span>
+            <span id="expSubmitBtnText"><i class="fa-solid fa-plus"></i> Tambah Pengalaman</span>
           </button>
         </div>
 
@@ -457,7 +767,7 @@
               <input type="text" id="certIssuer" placeholder="mis. Dicoding, Unmuh Babel">
             </div>
             <div class="form-group">
-              <label for="certDate">Tanggal</label>
+              <label for="certDate">Tanggal Terbit</label>
               <input type="text" id="certDate" placeholder="mis. Agustus 2025">
             </div>
           </div>
@@ -467,7 +777,7 @@
             <input type="url" id="certUrl" placeholder="https://verifikasi-sertifikat.com/id">
           </div>
 
-          <button class="submit-btn" onclick="uploadCertificate()">Upload Sertifikat</button>
+          <button class="submit-btn" onclick="uploadCertificate()"><i class="fa-solid fa-upload"></i> Upload Sertifikat</button>
         </div>
 
         <div class="section">
@@ -483,18 +793,18 @@
           <div id="newsFormError"></div>
 
           <div class="form-group full">
-            <label for="newsTitle">Judul</label>
+            <label for="newsTitle">Judul Berita</label>
             <input type="text" id="newsTitle" placeholder="Judul berita">
           </div>
 
           <div class="form-group">
-            <label for="newsImageInput">Foto (opsional)</label>
+            <label for="newsImageInput">Foto Gambar (opsional)</label>
             <input type="file" id="newsImageInput" accept="image/*" onchange="handleNewsFileChange(event)">
           </div>
           <div id="newsPreviewWrap"></div>
 
           <div class="form-group full">
-            <label for="newsSummary">Isi Singkat</label>
+            <label for="newsSummary">Isi Singkat / Ringkasan</label>
             <textarea id="newsSummary" placeholder="Ringkasan singkat berita..."></textarea>
           </div>
 
@@ -504,12 +814,12 @@
           </div>
 
           <div class="form-group full">
-            <label for="newsContent">Isi Berita Lengkap (opsional, kalau tidak ada link asli)</label>
+            <label for="newsContent">Isi Berita Lengkap (opsional, jika tanpa link asli)</label>
             <textarea id="newsContent" placeholder="Tulis isi berita lengkap di sini..." style="min-height:150px;"></textarea>
           </div>
 
           <button class="submit-btn" onclick="handleSaveNews()">
-            <span id="newsSubmitBtnText">Tambah Berita</span>
+            <span id="newsSubmitBtnText"><i class="fa-solid fa-plus"></i> Tambah Berita</span>
           </button>
         </div>
 
@@ -536,35 +846,35 @@
               <input type="text" id="category" placeholder="Web, Mobile, Design">
             </div>
             <div class="form-group">
-              <label for="emoji">Emoji</label>
+              <label for="emoji">Emoji Icon</label>
               <input type="text" id="emoji" placeholder="📁 🎨 💻" maxlength="2">
             </div>
           </div>
 
           <div class="form-group full">
-            <label for="description">Deskripsi</label>
+            <label for="description">Deskripsi Proyek</label>
             <textarea id="description" placeholder="Jelaskan tentang proyek ini..."></textarea>
           </div>
 
           <div class="form-row">
             <div class="form-group">
-              <label for="image">URL Gambar</label>
+              <label for="image">URL Gambar Banner</label>
               <input type="url" id="image" placeholder="https://example.com/image.jpg">
             </div>
             <div class="form-group">
-              <label for="link">Link Proyek</label>
+              <label for="link">Link Proyek Live</label>
               <input type="url" id="link" placeholder="https://example.com">
             </div>
           </div>
 
           <div class="form-group full">
-            <label for="tagInput">Tags (pisahkan dengan enter)</label>
+            <label for="tagInput">Tags Teknologi (tekan enter)</label>
             <input type="text" id="tagInput" placeholder="Ketik tag dan tekan Enter">
             <div class="tags-input" id="tagsList"></div>
           </div>
 
           <button class="submit-btn" onclick="handleSaveWork()">
-            <span id="submitBtnText">Tambah Karya</span>
+            <span id="submitBtnText"><i class="fa-solid fa-plus"></i> Tambah Karya</span>
           </button>
         </div>
 
@@ -582,7 +892,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h3>Edit Karya</h3>
-        <button class="close-btn" onclick="closeEditModal()">×</button>
+        <button class="close-btn" onclick="closeEditModal()">&times;</button>
       </div>
       <div id="editFormError"></div>
 
@@ -597,34 +907,34 @@
           <input type="text" id="editCategory" placeholder="Web, Mobile, Design">
         </div>
         <div class="form-group">
-          <label for="editEmoji">Emoji</label>
+          <label for="editEmoji">Emoji Icon</label>
           <input type="text" id="editEmoji" placeholder="📁 🎨 💻" maxlength="2">
         </div>
       </div>
 
       <div class="form-group full">
-        <label for="editDescription">Deskripsi</label>
+        <label for="editDescription">Deskripsi Proyek</label>
         <textarea id="editDescription" placeholder="Jelaskan tentang proyek ini..."></textarea>
       </div>
 
       <div class="form-row">
         <div class="form-group">
-          <label for="editImage">URL Gambar</label>
+          <label for="editImage">URL Gambar Banner</label>
           <input type="url" id="editImage" placeholder="https://example.com/image.jpg">
         </div>
         <div class="form-group">
-          <label for="editLink">Link Proyek</label>
+          <label for="editLink">Link Proyek Live</label>
           <input type="url" id="editLink" placeholder="https://example.com">
         </div>
       </div>
 
       <div class="form-group full">
-        <label for="editTagInput">Tags</label>
+        <label for="editTagInput">Tags Teknologi</label>
         <input type="text" id="editTagInput" placeholder="Ketik tag dan tekan Enter">
         <div class="tags-input" id="editTagsList"></div>
       </div>
 
-      <button class="submit-btn" onclick="handleUpdateWork()">Update Karya</button>
+      <button class="submit-btn" onclick="handleUpdateWork()"><i class="fa-solid fa-pen-to-square"></i> Update Karya</button>
     </div>
   </div>
 
@@ -633,12 +943,12 @@
     <div class="modal-content">
       <div class="modal-header">
         <h3>Edit Berita</h3>
-        <button class="close-btn" onclick="closeEditNewsModal()">×</button>
+        <button class="close-btn" onclick="closeEditNewsModal()">&times;</button>
       </div>
       <div id="editNewsFormError"></div>
 
       <div class="form-group full">
-        <label for="editNewsTitle">Judul</label>
+        <label for="editNewsTitle">Judul Berita</label>
         <input type="text" id="editNewsTitle" placeholder="Judul berita">
       </div>
 
@@ -663,7 +973,7 @@
         <textarea id="editNewsContent" style="min-height:150px;"></textarea>
       </div>
 
-      <button class="submit-btn" onclick="handleUpdateNews()">Update Berita</button>
+      <button class="submit-btn" onclick="handleUpdateNews()"><i class="fa-solid fa-pen-to-square"></i> Update Berita</button>
     </div>
   </div>
 
@@ -840,7 +1150,7 @@
         const wrap = document.getElementById('profilePhotoPreviewWrap');
         wrap.innerHTML = profileData.photo
           ? `<img src="${profileData.photo}" class="photo-preview">`
-          : `<div class="photo-preview-placeholder">🙂</div>`;
+          : `<div class="photo-preview-placeholder"><i class="fa-regular fa-user"></i></div>`;
 
         renderSkills();
       } catch (err) {
@@ -859,14 +1169,14 @@
     function renderSkills() {
       const list = document.getElementById('skillsList');
       if (!profileData.skills.length) {
-        list.innerHTML = '<p style="color:#999;">Belum ada skill.</p>';
+        list.innerHTML = '<p style="color:var(--text-sub);">Belum ada skill.</p>';
         return;
       }
       list.innerHTML = profileData.skills.map((s, i) => `
         <div class="skill-row">
           <input type="text" value="${s.name}" onchange="profileData.skills[${i}].name=this.value">
           <input type="number" value="${s.level}" min="0" max="100" onchange="profileData.skills[${i}].level=parseInt(this.value)||0">
-          <button onclick="removeSkill(${i})">Hapus</button>
+          <button onclick="removeSkill(${i})"><i class="fa-solid fa-trash-can"></i></button>
         </div>
       `).join('');
     }
@@ -984,7 +1294,7 @@
         const list = document.getElementById('experienceListAdmin');
 
         if (!data.items || !data.items.length) {
-          list.innerHTML = '<p style="color:#999; text-align:center;">Belum ada pengalaman</p>';
+          list.innerHTML = '<p style="color:var(--text-sub); text-align:center;">Belum ada pengalaman</p>';
           return;
         }
 
@@ -1001,7 +1311,7 @@
                 <div class="list-item-desc">${item.description || ''}</div>
               </div>
               <div class="list-item-actions">
-                <button class="delete-btn" onclick="deleteExperience('${item.id}')">Hapus</button>
+                <button class="delete-btn" onclick="deleteExperience('${item.id}')"><i class="fa-solid fa-trash-can"></i> Hapus</button>
               </div>
             </div>
           `;
@@ -1031,7 +1341,7 @@
       if (!file) return;
       const dataUrl = await compressImage(file, 1000, 0.75);
       newCertImage = dataUrl;
-      document.getElementById('certPreviewWrap').innerHTML = `<img src="${dataUrl}" style="max-width:200px; border-radius:8px; margin-bottom:15px;">`;
+      document.getElementById('certPreviewWrap').innerHTML = `<img src="${dataUrl}" style="max-width:200px; border-radius:8px; margin-bottom:15px; border: 1px solid var(--border-color);">`;
     }
 
     async function uploadCertificate() {
@@ -1085,13 +1395,13 @@
         const list = document.getElementById('certAdminList');
 
         if (!data.certificates || !data.certificates.length) {
-          list.innerHTML = '<p style="color:#999;">Belum ada sertifikat.</p>';
+          list.innerHTML = '<p style="color:var(--text-sub);">Belum ada sertifikat.</p>';
           return;
         }
 
         list.innerHTML = `<div class="cert-admin-grid">${data.certificates.map(c => `
           <div class="cert-admin-item">
-            <button class="cert-admin-delete" onclick="deleteCertificate('${c.id}')">×</button>
+            <button class="cert-admin-delete" onclick="deleteCertificate('${c.id}')">&times;</button>
             ${c.image ? `<img src="${c.image}" alt="">` : ''}
             <div class="cert-admin-caption">${c.title}${c.issuer ? ' · ' + c.issuer : ''}</div>
           </div>
@@ -1121,7 +1431,7 @@
       if (!file) return;
       const dataUrl = await compressImage(file, 900, 0.72);
       newNewsImage = dataUrl;
-      document.getElementById('newsPreviewWrap').innerHTML = `<img src="${dataUrl}" style="max-width:220px; border-radius:8px; margin-bottom:15px;">`;
+      document.getElementById('newsPreviewWrap').innerHTML = `<img src="${dataUrl}" style="max-width:220px; border-radius:8px; margin-bottom:15px; border: 1px solid var(--border-color);">`;
     }
 
     async function handleSaveNews() {
@@ -1178,7 +1488,7 @@
         const list = document.getElementById('newsListAdmin');
 
         if (!data.items || !data.items.length) {
-          list.innerHTML = '<p style="color:#999; text-align:center;">Belum ada berita</p>';
+          list.innerHTML = '<p style="color:var(--text-sub); text-align:center;">Belum ada berita</p>';
           return;
         }
 
@@ -1190,8 +1500,8 @@
               <div class="list-item-desc">${item.summary || ''}</div>
             </div>
             <div class="list-item-actions">
-              <button class="edit-btn" onclick='openEditNewsModal(${JSON.stringify(item).replace(/'/g, "&apos;")})'>Edit</button>
-              <button class="delete-btn" onclick="deleteNews('${item.id}')">Hapus</button>
+              <button class="edit-btn" onclick='openEditNewsModal(${JSON.stringify(item).replace(/'/g, "&apos;")})'><i class="fa-solid fa-pen-to-square"></i> Edit</button>
+              <button class="delete-btn" onclick="deleteNews('${item.id}')"><i class="fa-solid fa-trash-can"></i> Hapus</button>
             </div>
           </div>
         `).join('');
@@ -1208,7 +1518,7 @@
       document.getElementById('editNewsSourceUrl').value = item.sourceUrl || '';
       document.getElementById('editNewsContent').value = item.content || '';
       document.getElementById('editNewsPreviewWrap').innerHTML = item.image
-        ? `<img src="${item.image}" style="max-width:200px; border-radius:8px; margin-bottom:15px;">`
+        ? `<img src="${item.image}" style="max-width:200px; border-radius:8px; margin-bottom:15px; border: 1px solid var(--border-color);">`
         : '';
       document.getElementById('editNewsImageInput').value = '';
       document.getElementById('editNewsModal').classList.add('active');
@@ -1225,7 +1535,7 @@
       if (!file) return;
       const dataUrl = await compressImage(file, 900, 0.72);
       editNewsImage = dataUrl;
-      document.getElementById('editNewsPreviewWrap').innerHTML = `<img src="${dataUrl}" style="max-width:200px; border-radius:8px; margin-bottom:15px;">`;
+      document.getElementById('editNewsPreviewWrap').innerHTML = `<img src="${dataUrl}" style="max-width:200px; border-radius:8px; margin-bottom:15px; border: 1px solid var(--border-color);">`;
     }
 
     async function handleUpdateNews() {
@@ -1294,7 +1604,7 @@
     function renderTags() {
       const container = document.getElementById('tagsList');
       container.innerHTML = currentTags.map((tag, i) => `
-        <div class="tag-item">${tag}<button onclick="removeTag(${i})">×</button></div>
+        <div class="tag-item">${tag}<button onclick="removeTag(${i})">&times;</button></div>
       `).join('');
     }
 
@@ -1313,7 +1623,7 @@
     function renderEditTags() {
       const container = document.getElementById('editTagsList');
       container.innerHTML = editingTags.map((tag, i) => `
-        <div class="tag-item">${tag}<button onclick="removeEditTag(${i})">×</button></div>
+        <div class="tag-item">${tag}<button onclick="removeEditTag(${i})">&times;</button></div>
       `).join('');
     }
 
@@ -1325,7 +1635,7 @@
         const list = document.getElementById('worksList');
 
         if (!data.works || data.works.length === 0) {
-          list.innerHTML = '<p style="text-align: center; color: #999;">Belum ada karya</p>';
+          list.innerHTML = '<p style="text-align: center; color: var(--text-sub);">Belum ada karya</p>';
           return;
         }
 
@@ -1337,8 +1647,8 @@
               <div class="list-item-desc">${work.description}</div>
             </div>
             <div class="list-item-actions">
-              <button class="edit-btn" onclick="openEditModal('${work.id}', ${JSON.stringify(work).replace(/'/g, "&apos;")})">Edit</button>
-              <button class="delete-btn" onclick="deleteWork('${work.id}')">Hapus</button>
+              <button class="edit-btn" onclick="openEditModal('${work.id}', ${JSON.stringify(work).replace(/'/g, "&apos;")})"><i class="fa-solid fa-pen-to-square"></i> Edit</button>
+              <button class="delete-btn" onclick="deleteWork('${work.id}')"><i class="fa-solid fa-trash-can"></i> Hapus</button>
             </div>
           </div>
         `).join('');
