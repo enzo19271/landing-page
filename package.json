@@ -1,0 +1,17 @@
+{
+  "name": "portfolio-system",
+  "version": "1.0.0",
+  "description": "Portfolio Management System",
+  "scripts": {
+    "dev": "vercel dev",
+    "build": "echo 'Build complete'"
+  },
+  "keywords": [
+    "portfolio",
+    "management",
+    "system"
+  ],
+  "author": "",
+  "license": "MIT",
+  "type": "module"
+}

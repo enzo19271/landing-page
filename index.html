@@ -1,87 +1,289 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Private Landing Page</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap');
-        body { font-family: 'Inter', sans-serif; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portfolio - Feriawan</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      color: #333;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    header {
+      text-align: center;
+      color: white;
+      margin-bottom: 60px;
+    }
+
+    h1 {
+      font-size: 3em;
+      margin-bottom: 10px;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .subtitle {
+      font-size: 1.2em;
+      opacity: 0.95;
+      margin-bottom: 20px;
+    }
+
+    .admin-link {
+      display: inline-block;
+      background: rgba(255,255,255,0.2);
+      color: white;
+      padding: 8px 16px;
+      border-radius: 20px;
+      text-decoration: none;
+      transition: all 0.3s;
+      font-size: 0.9em;
+    }
+
+    .admin-link:hover {
+      background: rgba(255,255,255,0.3);
+    }
+
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 30px;
+      margin-bottom: 40px;
+    }
+
+    .work-card {
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .work-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+    }
+
+    .work-image {
+      width: 100%;
+      height: 220px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 3em;
+      overflow: hidden;
+    }
+
+    .work-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .work-content {
+      padding: 20px;
+    }
+
+    .work-title {
+      font-size: 1.3em;
+      font-weight: bold;
+      margin-bottom: 8px;
+      color: #333;
+    }
+
+    .work-category {
+      display: inline-block;
+      background: #f0f0f0;
+      color: #666;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.85em;
+      margin-bottom: 12px;
+    }
+
+    .work-description {
+      color: #666;
+      font-size: 0.95em;
+      line-height: 1.5;
+      margin-bottom: 15px;
+    }
+
+    .work-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tag {
+      background: #e8e8e8;
+      color: #555;
+      padding: 4px 10px;
+      border-radius: 15px;
+      font-size: 0.8em;
+    }
+
+    .work-link {
+      display: inline-block;
+      color: #667eea;
+      text-decoration: none;
+      font-weight: 500;
+      margin-top: 15px;
+      transition: color 0.3s;
+    }
+
+    .work-link:hover {
+      color: #764ba2;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: white;
+    }
+
+    .empty-state h2 {
+      font-size: 2em;
+      margin-bottom: 10px;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 60px 20px;
+      color: white;
+      font-size: 1.2em;
+    }
+
+    .spinner {
+      border: 4px solid rgba(255,255,255,0.3);
+      border-top: 4px solid white;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin: 20px auto;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    footer {
+      text-align: center;
+      color: white;
+      padding: 20px;
+      opacity: 0.8;
+    }
+
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 2em;
+      }
+
+      .portfolio-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
-<body class="bg-gray-50 text-gray-900">
+<body>
+  <div class="container">
+    <header>
+      <h1>Portfolio</h1>
+      <p class="subtitle">Karya dan Proyek Terbaik Saya</p>
+      <a href="admin.html" class="admin-link">Admin Panel →</a>
+    </header>
 
-    <!-- Navigation -->
-    <nav class="p-6 flex justify-between items-center bg-white shadow-sm">
-        <div class="text-xl font-bold tracking-tighter">MY.SPACE</div>
-        <a href="#contact" class="bg-black text-white px-4 py-2 rounded-full text-sm font-medium">Hubungi Saya</a>
-    </nav>
+    <div id="content"></div>
 
-    <!-- Hero Section -->
-    <section class="px-6 py-16 md:py-24 max-w-4xl mx-auto text-center">
-        <h1 class="text-4xl md:text-6xl font-extrabold leading-tight mb-6">
-            Selamat Datang di <span class="text-blue-600">Ruang Privat</span> Saya.
-        </h1>
-        <p class="text-gray-600 text-lg md:text-xl mb-10">
-            Tempat di mana ide, proyek, dan kolaborasi eksklusif dimulai. Saya membantu Anda membangun solusi digital yang bermakna.
-        </p>
-        <div class="flex flex-col md:flex-row justify-center gap-4">
-            <a href="#proyek" class="bg-blue-600 text-white px-8 py-4 rounded-xl font-semibold hover:bg-blue-700 transition">Lihat Proyek</a>
-            <a href="#" class="bg-white border border-gray-300 px-8 py-4 rounded-xl font-semibold hover:bg-gray-50 transition">Pelajari Lebih Lanjut</a>
-        </div>
-    </section>
-
-    <!-- Features / Services -->
-   <!-- Navigation Update -->
-<nav class="p-6 flex justify-between items-center bg-white shadow-sm sticky top-0 z-50">
-    <div class="text-xl font-bold tracking-tighter">MY.SPACE</div>
-    <div class="hidden md:flex gap-6 text-sm font-medium">
-        <a href="aktivitas.html" class="hover:text-blue-600 transition">Catatan Aktivitas</a>
-        <a href="#" class="hover:text-blue-600 transition">Tools & AI Prompt</a>
-        <span class="text-gray-400 cursor-not-allowed">Soon</span>
-    </div>
-</nav>
-
-<!-- Hero / Grid Update -->
-<section class="px-6 py-12 max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
-    <!-- Menu 1 -->
-    <a href="aktivitas.html" class="group p-8 border border-gray-200 rounded-3xl bg-white hover:shadow-xl transition-all duration-300">
-        <div class="w-12 h-12 bg-blue-600 rounded-2xl mb-6 flex items-center justify-center text-white">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
-            </svg>
-        </div>
-        <h3 class="text-xl font-bold mb-2 group-hover:text-blue-600">Catatan Aktivitas</h3>
-        <p class="text-gray-500 text-sm">Pantau kebiasaan harian dan produktivitas kamu secara real-time.</p>
-    </a>
-
-    <!-- Menu 2 -->
-    <div class="p-8 border border-gray-200 rounded-3xl bg-white opacity-80">
-        <div class="w-12 h-12 bg-purple-600 rounded-2xl mb-6 flex items-center justify-center text-white">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-            </svg>
-        </div>
-        <h3 class="text-xl font-bold mb-2">Tools & AI Prompt</h3>
-        <p class="text-gray-500 text-sm">Kumpulan prompt AI pilihan untuk mempercepat alur kerja harian.</p>
-    </div>
-
-    <!-- Menu 3 -->
-    <div class="p-8 border border-gray-100 rounded-3xl bg-gray-100 flex flex-col justify-center items-center text-center italic text-gray-400">
-        <span class="text-lg font-semibold">Coming Soon</span>
-    </div>
-</section>
-
-    <!-- Footer / Contact -->
-    <footer id="contact" class="px-6 py-12 text-center border-t border-gray-100">
-        <p class="text-gray-400 text-sm mb-4">&copy; 2026 My Private Space. All rights reserved.</p>
-        <div class="flex justify-center gap-6">
-            <a href="#" class="text-gray-400 hover:text-black transition">Instagram</a>
-            <a href="#" class="text-gray-400 hover:text-black transition">LinkedIn</a>
-            <a href="#" class="text-gray-400 hover:text-black transition">Email</a>
-        </div>
+    <footer>
+      <p>&copy; 2024 Feriawan. All rights reserved.</p>
     </footer>
+  </div>
 
+  <script>
+    const API_BASE = '/api';
+
+    async function loadPortfolio() {
+      const content = document.getElementById('content');
+      content.innerHTML = '<div class="loading"><div class="spinner"></div><p>Loading portfolio...</p></div>';
+
+      try {
+        const response = await fetch(`${API_BASE}/portfolio`);
+        const data = await response.json();
+
+        if (!data.works || data.works.length === 0) {
+          content.innerHTML = `
+            <div class="empty-state">
+              <h2>Portfolio Kosong</h2>
+              <p>Belum ada karya yang ditampilkan saat ini.</p>
+            </div>
+          `;
+          return;
+        }
+
+        const grid = document.createElement('div');
+        grid.className = 'portfolio-grid';
+
+        data.works.forEach(work => {
+          const card = document.createElement('div');
+          card.className = 'work-card';
+          
+          const imageHtml = work.image ? `<img src="${work.image}" alt="${work.title}">` : `<div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 3em;">${work.emoji || '📁'}</div>`;
+          
+          const tagsHtml = work.tags ? work.tags.map(tag => `<span class="tag">${tag}</span>`).join('') : '';
+          
+          const linkHtml = work.link ? `<a href="${work.link}" target="_blank" class="work-link">Lihat Proyek →</a>` : '';
+
+          card.innerHTML = `
+            <div class="work-image">
+              ${imageHtml}
+            </div>
+            <div class="work-content">
+              <div class="work-title">${work.title}</div>
+              <span class="work-category">${work.category || 'Project'}</span>
+              <div class="work-description">${work.description || ''}</div>
+              <div class="work-tags">
+                ${tagsHtml}
+              </div>
+              ${linkHtml}
+            </div>
+          `;
+
+          grid.appendChild(card);
+        });
+
+        content.innerHTML = '';
+        content.appendChild(grid);
+      } catch (err) {
+        console.error('Error loading portfolio:', err);
+        content.innerHTML = `
+          <div class="empty-state">
+            <h2>Error</h2>
+            <p>Terjadi kesalahan saat memuat portfolio.</p>
+          </div>
+        `;
+      }
+    }
+
+    // Load on page load
+    window.addEventListener('DOMContentLoaded', loadPortfolio);
+  </script>
 </body>
 </html>
