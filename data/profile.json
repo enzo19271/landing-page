@@ -14,29 +14,37 @@
   },
   "skills": [
     {
-      "name": "Web Development",
-      "level": 90
+      "name": "Vine Coding",
+      "level": 75
     },
     {
       "name": "Videography",
-      "level": 75
+      "level": 85
     },
     {
       "name": "Photography",
-      "level": 75
+      "level": 90
     },
     {
       "name": "Graphic Design",
-      "level": 70
-    },
-    {
-      "name": "IT Support",
       "level": 80
     },
     {
+      "name": "IT Support",
+      "level": 75
+    },
+    {
       "name": "Social Media Management",
-      "level": 70
+      "level": 80
+    },
+    {
+      "name": "Mengoperasikan Excel, Word & PPTX",
+      "level": 80
+    },
+    {
+      "name": "Mengoperasikan Canva & Capcut",
+      "level": 100
     }
   ],
-  "updatedAt": "2026-08-11T02:34:10.144Z"
+  "updatedAt": "2026-08-11T03:15:42.286Z"
 }
