@@ -97,7 +97,7 @@ async function updateGitHubFile(path, content, message) {
 
 // ─── ROUTES ──────────────────────────────────────────────────────────────────
 export default async function handler(req, res) {
-  const { method, url, headers, body: rawBody } = req;
+  const { method, url, headers } = req;
   
   // CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -113,12 +113,14 @@ export default async function handler(req, res) {
     const path = new URL(`http://localhost${url}`).pathname;
     const parts = path.split('/').filter(Boolean);
     
-    // Parse body
-    let body = {};
-    if (rawBody) {
+    // Vercel already parses JSON bodies into req.body automatically
+    let body = req.body || {};
+    if (typeof body === 'string') {
       try {
-        body = JSON.parse(rawBody);
-      } catch {}
+        body = JSON.parse(body);
+      } catch {
+        body = {};
+      }
     }
 
     // ─── PUBLIC: GET PORTFOLIO ───────────────────────────────────────────
