@@ -34,17 +34,6 @@
       "createdAt": "2026-08-11T03:22:41.789Z"
     },
     {
-      "id": "1786418478261",
-      "type": "organisasi",
-      "position": "OSIS",
-      "organization": "SMAN 1 NAMANG",
-      "startDate": "2022/2023",
-      "endDate": "2024/2025",
-      "current": false,
-      "description": "Menjadi Ketia Devisi IT & Media Social Management",
-      "createdAt": "2026-08-11T03:21:18.261Z"
-    },
-    {
       "id": "1786418047222",
       "type": "kerja",
       "position": "Sekretaris BUMDES",
